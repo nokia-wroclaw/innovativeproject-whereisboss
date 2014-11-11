@@ -22,7 +22,8 @@ public class Sniffer{
         wifiManager.startScan();
     }
 
-    public void startScan(){
+    public void startScan()
+    {
         wifiManager.startScan();
     }
 
@@ -31,12 +32,13 @@ public class Sniffer{
         return lista;
     }
 
-    public String[][] getListToSend(){
+    public String[][] getListToSend()
+    {
         return wifis;
     }
 
-
-    public WifiScanReceier getReceier(){
+    public WifiScanReceier getReceier()
+    {
         return wifiReceier;
     }
 
@@ -55,6 +57,7 @@ public class Sniffer{
                 wifis[1][i] = wifiScanList.get(i).BSSID;
                 wifis[2][i] = Integer.toString(wifiScanList.get(i).level);
                 wifis[3][i] = Integer.toString(wifiScanList.get(i).frequency);
+                //wifis[4][i] = Long.toString(wifiScanList.get(i).timestamp);
             }
         }
     }

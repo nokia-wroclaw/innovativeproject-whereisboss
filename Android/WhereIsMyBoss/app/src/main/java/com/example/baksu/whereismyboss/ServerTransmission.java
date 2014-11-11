@@ -6,10 +6,12 @@ import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -40,11 +42,12 @@ public class ServerTransmission
                 JSONObject obj = new JSONObject();
                 try
                 {
-                    obj.put("ssid", list[0] );
-                    obj.put("bssid", list[1] );
-                    obj.put("level", list[2] );
-                    obj.put("frequency", list[3] );
-                  //  obj.put("timestamp", list[4] );
+                    obj.put("ssid", Arrays.toString(list[0]) );
+                    obj.put("bssid", Arrays.toString(list[1]) );
+                    obj.put("level", Arrays.toString(list[2]) );
+                    obj.put("frequency", Arrays.toString(list[3]) );
+                    //obj.put("timestamp", Arrays.toString(list[4]) );
+
                 } catch (JSONException e)
                 {
                     e.printStackTrace();
