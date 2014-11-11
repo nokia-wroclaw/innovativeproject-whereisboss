@@ -15,13 +15,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-    Sniffer sniff;
     WifiManager wifiManager;
-    ListView list;
     WifiScanReceier wifiReceier;
+    Sniffer sniff;
+    ListView list;
+    TextView serverLog;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class MainActivity extends Activity {
     {
         switch(v.getId()){
             case R.id.bntSniff: startSniff(); break;
+            case R.id.bntConnect: bntConnect(); break;
         }
     }
 
@@ -57,6 +60,9 @@ public class MainActivity extends Activity {
         list.setAdapter(new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,sniff.getList()));
     }
 
+    public void bntConnect() {
+
+    }
 
 }
 

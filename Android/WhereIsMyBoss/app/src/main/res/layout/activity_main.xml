@@ -9,12 +9,12 @@
         android:id="@+id/list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/bntSniff"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:background="@android:color/background_dark"
         android:drawSelectorOnTop="false"
-        android:listSelector="@android:color/darker_gray" />
+        android:listSelector="@android:color/darker_gray"
+        android:layout_above="@+id/serverLog" />
 
     <Button
         android:id="@+id/bntSniff"
@@ -24,5 +24,26 @@
         android:layout_alignParentBottom="true"
         android:text="Sniff"
         android:onClick="bntClick" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Connect"
+        android:id="@+id/bntConnect"
+        android:layout_alignTop="@+id/bntSniff"
+        android:layout_toRightOf="@+id/bntSniff"
+        android:layout_toEndOf="@+id/bntSniff"
+        android:onClick="bntClick" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="LOG"
+        android:id="@+id/serverLog"
+        android:layout_above="@+id/bntConnect"
+        android:layout_centerHorizontal="true" />
+
 
 </RelativeLayout>
