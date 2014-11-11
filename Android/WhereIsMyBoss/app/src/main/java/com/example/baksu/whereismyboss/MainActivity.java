@@ -24,6 +24,7 @@ public class MainActivity extends Activity {
     Sniffer sniff;
     ListView list;
     TextView serverLog;
+    ServerTransmission serverTransmission;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class MainActivity extends Activity {
         wifiManager = (WifiManager)getSystemService(Context.WIFI_SERVICE);
         sniff = new Sniffer(wifiManager);
         this.wifiReceier = sniff.getReceier();
+        serverTransmission = new ServerTransmission();
     }
 
     public void onPause()
@@ -50,18 +52,26 @@ public class MainActivity extends Activity {
     {
         switch(v.getId()){
             case R.id.bntSniff: startSniff(); break;
-            case R.id.bntConnect: bntConnect(); break;
+            case R.id.bntSend: bntSend(); break;
+            case R.id.bntText: bntText(); break;
         }
     }
 
     public void startSniff ()
     {
+        sniff.startScan();
         list = (ListView)findViewById(R.id.list);
         list.setAdapter(new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,sniff.getList()));
     }
 
-    public void bntConnect() {
+    public void bntSend() {
+        serverTransmission.createConnect(sniff.getListToSend());
+        serverTransmission.startConnection();
+    }
 
+    public void bntText(){
+        serverLog = (TextView)findViewById(R.id.serverLog);
+        serverLog.setText(serverTransmission.getText());
     }
 
 }

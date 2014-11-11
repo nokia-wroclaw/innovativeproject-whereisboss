@@ -29,8 +29,8 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Connect"
-        android:id="@+id/bntConnect"
+        android:text="Send"
+        android:id="@+id/bntSend"
         android:layout_alignTop="@+id/bntSniff"
         android:layout_toRightOf="@+id/bntSniff"
         android:layout_toEndOf="@+id/bntSniff"
@@ -42,8 +42,20 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="LOG"
         android:id="@+id/serverLog"
-        android:layout_above="@+id/bntConnect"
+        android:layout_above="@+id/bntSend"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="text"
+        android:id="@+id/bntText"
+        android:layout_toEndOf="@+id/bntSend"
+        android:onClick="bntClick"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/serverLog"
+        android:layout_alignEnd="@+id/serverLog" />
 
 
 </RelativeLayout>

@@ -12,7 +12,8 @@ public class Sniffer{
     WifiManager wifiManager;
     List<ScanResult> wifiScanList;
     WifiScanReceier wifiReceier;
-    String wifis[];
+    String wifis[][];
+    String lista[];
 
 
     public Sniffer(WifiManager wM) {
@@ -21,11 +22,19 @@ public class Sniffer{
         wifiManager.startScan();
     }
 
+    public void startScan(){
+        wifiManager.startScan();
+    }
+
     public String[] getList()
     {
-        wifiManager.startScan();
+        return lista;
+    }
+
+    public String[][] getListToSend(){
         return wifis;
     }
+
 
     public WifiScanReceier getReceier(){
         return wifiReceier;
@@ -37,12 +46,16 @@ public class Sniffer{
         public void onReceive(Context context, Intent intent)
         {
             List<ScanResult> wifiScanList = wifiManager.getScanResults();
-            wifis = new String[wifiScanList.size()];
+            wifis = new String[4][wifiScanList.size()];
+            lista = new String[wifiScanList.size()];
             for(int i = 0; i< wifiScanList.size(); i++)
             {
-                wifis[i] = ((wifiScanList.get(i)).toString());
+                lista[i] = wifiScanList.get(i).toString();
+                wifis[0][i] = wifiScanList.get(i).SSID;
+                wifis[1][i] = wifiScanList.get(i).BSSID;
+                wifis[2][i] = Integer.toString(wifiScanList.get(i).level);
+                wifis[3][i] = Integer.toString(wifiScanList.get(i).frequency);
             }
-
         }
     }
 }
