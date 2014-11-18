@@ -8,8 +8,10 @@ import com.github.nkzawa.socketio.client.Socket;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.*;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
@@ -27,38 +29,30 @@ public class ServerTransmission
     {
         try
         {
-            this.socket = IO.socket("https://whereisboss.herokuapp.com");
+            this.socket = IO.socket("https://intense-plateau-3634.herokuapp.com");
 
         }catch(URISyntaxException e) {
                text = "jakis dziwny blad";
         }
     }
 
-    public void createConnect(final String[][] list){
+    public void createConnect(){
         socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args)
             {
-                JSONObject obj = new JSONObject();
-                try
-                {
-                    obj.put("ssid", Arrays.toString(list[0]) );
-                    obj.put("bssid", Arrays.toString(list[1]) );
-                    obj.put("level", Arrays.toString(list[2]) );
-                    obj.put("frequency", Arrays.toString(list[3]) );
-                    //obj.put("timestamp", Arrays.toString(list[4]) );
-
-                } catch (JSONException e)
-                {
-                    e.printStackTrace();
-                }
-                socket.emit("foo", obj);
+                text = "wyslane";
             }
         }).on("event", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 text = "dostałem: " + args[0];
-                socket.disconnect();
+                //socket.disconnect();
+            }
+        }).on(socket.EVENT_DISCONNECT, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                text = "rozłączylo";
             }
         });
     }
@@ -71,6 +65,12 @@ public class ServerTransmission
     public String getText()
     {
         return text;
+    }
+
+    public void sendList(JSONArray list)
+    {
+        list.put("Pokoj 3");
+        socket.emit("foo", list);
     }
 
 }

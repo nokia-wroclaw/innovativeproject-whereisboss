@@ -34,6 +34,8 @@ public class MainActivity extends Activity {
         sniff = new Sniffer(wifiManager);
         this.wifiReceier = sniff.getReceier();
         serverTransmission = new ServerTransmission();
+        serverTransmission.createConnect();
+        serverTransmission.startConnection();
     }
 
     public void onPause()
@@ -65,8 +67,7 @@ public class MainActivity extends Activity {
     }
 
     public void bntSend() {
-        serverTransmission.createConnect(sniff.getListToSend());
-        serverTransmission.startConnection();
+        serverTransmission.sendList(sniff.getListToSend());
     }
 
     public void bntText(){
