@@ -1,6 +1,7 @@
 package com.example.baksu.whereismyboss;
 
 import android.os.Debug;
+import android.util.Log;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
@@ -21,22 +22,24 @@ import java.util.concurrent.ExecutionException;
  */
 public class ServerTransmission
 {
-
+    private String lista[] = null;
     Socket socket;
     private String text = "brak polaczaenia";
 
-    public ServerTransmission()
+    public ServerTransmission()                     //Stworzenie socketa z serwerem
     {
         try
+
         {
-            this.socket = IO.socket("https://intense-plateau-3634.herokuapp.com");
+           this.socket = IO.socket("https://whereisboss.herokuapp.com");
+           // this.socket = IO.socket("https://whereisbosstest.herokuapp.com");
 
         }catch(URISyntaxException e) {
                text = "jakis dziwny blad";
         }
     }
 
-    public void createConnect(){
+    public void createConnect(){                                        //nie wiem czy ta funkcja jest potrzebna ?
         socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args)
@@ -57,7 +60,7 @@ public class ServerTransmission
         });
     }
 
-    public void startConnection()
+    public void startConnection()           // Rozpoczęcie połączenia z serwerem
     {
         socket.connect();
     }
@@ -67,10 +70,45 @@ public class ServerTransmission
         return text;
     }
 
-    public void sendList(JSONArray list)
+    public void sendList(JSONArray list, String mac, String room)              //Funkcja odpowiedzialna za przesłanie wszystkich access pointów
     {
-        list.put("Pokoj 3");
+        list.put(mac);
+        list.put(room);
         socket.emit("foo", list);
+    }
+
+    public void downloadRoom()                                  // Funckaj odpowiedzialna za pobieranie pokojów
+    {
+        socket.emit("getData","test");              //TODO Zmienić potem na normalne getData
+        socket.on("getData", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                Log.d("dostana dana", "dostalem odp");
+                JSONArray rooms = null;
+                JSONObject floor = (JSONObject)args[0];
+                try {
+                    rooms = floor.getJSONArray("rooms");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                lista = new String[rooms.length()];
+
+                for(int i = 0; i < rooms.length(); i++)
+                {
+                    try {
+                        lista[i] = rooms.getJSONObject(i).getString("name");
+                        Log.d("dostana dana", lista[i]);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    public String[] getRooms()
+    {
+        return lista;
     }
 
 }

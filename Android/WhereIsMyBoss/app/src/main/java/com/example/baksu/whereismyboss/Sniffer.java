@@ -16,20 +16,39 @@ public class Sniffer{
     WifiManager wifiManager;
     List<ScanResult> wifiScanList;
     WifiScanReceier wifiReceier;
-    String lista[];
+    String lista[] = null;
     JSONArray arr;
 
 
-    public Sniffer(WifiManager wM) {
+    public Sniffer(WifiManager wM) {        //Konstruktor tworzacy wifimanagera
         this.wifiManager = wM;
         wifiReceier = new WifiScanReceier();
         wifiManager.startScan();
     }
 
-    public void startScan()
+    public void startScan()               //Funkcja obsługująca zbieranie danych przez wifimanager
     {
         wifiManager.startScan();
-    }
+        List<ScanResult> wifiScanList = wifiManager.getScanResults();
+        lista = new String[wifiScanList.size()];
+        arr = new JSONArray();
+        for(int i = 0; i< wifiScanList.size(); i++)
+        {
+            lista[i] = wifiScanList.get(i).toString();
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("ssid", wifiScanList.get(i).SSID);
+                obj.put("bssid", wifiScanList.get(i).BSSID);
+                obj.put("level", wifiScanList.get(i).level);
+                obj.put("frequency", wifiScanList.get(i).frequency);
+                //obj.put("timestamp",wifiScanList);                    //Nie mam pojęcia jak to wyciągnąć
+                arr.put(i,obj);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }      //Rozpoczęcia scanu
 
     public String[] getList()
     {
@@ -51,29 +70,6 @@ public class Sniffer{
         @Override
         public void onReceive(Context context, Intent intent)
         {
-            List<ScanResult> wifiScanList = wifiManager.getScanResults();
-            lista = new String[wifiScanList.size()];
-            arr = new JSONArray();
-            for(int i = 0; i< wifiScanList.size(); i++)
-            {
-                lista[i] = wifiScanList.get(i).toString();
-                JSONObject obj = new JSONObject();
-                try {
-                    obj.put("SSID", wifiScanList.get(i).SSID);
-                    obj.put("BSSID", wifiScanList.get(i).BSSID);
-                    obj.put("level", Integer.toString(wifiScanList.get(i).level));
-                    obj.put("frequency", Integer.toString(wifiScanList.get(i).frequency));
-                    arr.put(i,obj);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-               // wifis[0][i] = wifiScanList.get(i).SSID;
-               // wifis[1][i] = wifiScanList.get(i).BSSID;
-              //  wifis[2][i] = Integer.toString(wifiScanList.get(i).level);
-               // wifis[3][i] = Integer.toString(wifiScanList.get(i).frequency);
-                //wifis[4][i] = Long.toString(wifiScanList.get(i).timestamp);
-            }
         }
     }
 }

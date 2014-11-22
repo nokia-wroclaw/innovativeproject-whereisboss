@@ -9,12 +9,12 @@
         android:id="@+id/list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:background="@android:color/background_dark"
-        android:drawSelectorOnTop="false"
+        android:drawSelectorOnTop="true"
         android:listSelector="@android:color/darker_gray"
-        android:layout_above="@+id/serverLog" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/roomList" />
 
     <Button
         android:id="@+id/bntSniff"
@@ -36,26 +36,23 @@
         android:layout_toEndOf="@+id/bntSniff"
         android:onClick="bntClick" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="LOG"
-        android:id="@+id/serverLog"
-        android:layout_above="@+id/bntSend"
-        android:layout_centerHorizontal="true" />
-
     <Button
-        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="text"
-        android:id="@+id/bntText"
+        android:text="Get room"
+        android:id="@+id/bntGetRoom"
+        android:layout_alignBottom="@+id/bntSend"
+        android:layout_toRightOf="@+id/bntSend"
         android:layout_toEndOf="@+id/bntSend"
-        android:onClick="bntClick"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/serverLog"
-        android:layout_alignEnd="@+id/serverLog" />
+        android:onClick="bntClick"/>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/roomList"
+        android:layout_above="@+id/bntSend"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/background_dark" />
 
 
 </RelativeLayout>
