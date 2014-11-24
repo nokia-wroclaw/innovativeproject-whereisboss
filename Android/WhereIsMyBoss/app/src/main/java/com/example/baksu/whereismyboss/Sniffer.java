@@ -1,33 +1,37 @@
 package com.example.baksu.whereismyboss;
 
 import java.util.List;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
-import android.net.wifi.*;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/*
+*   Klasa odpowiedzialna za skanowanie wszystkich dostępnych access pointów
+ */
 public class Sniffer{
     WifiManager wifiManager;
     List<ScanResult> wifiScanList;
-    WifiScanReceier wifiReceier;
     String lista[] = null;
     JSONArray arr;
+    private List<ScanResult> all;
+    private List<ScanResult> numbers;
 
-
-    public Sniffer(WifiManager wM) {        //Konstruktor tworzacy wifimanagera
+/*
+* Konstruktor wifiManagere'a
+ */
+    public Sniffer(WifiManager wM) {
         this.wifiManager = wM;
-        wifiReceier = new WifiScanReceier();
-        wifiManager.startScan();
     }
-
-    public void startScan()               //Funkcja obsługująca zbieranie danych przez wifimanager
+/*
+* Metoda odpowiedzialna za przeskanowanie wszystkich dostępnych access pointów w zasięgu sygnału
+* i stworzenie na ich podstawie JSONArray w której są JSONObject.
+*
+ */
+    public void startScan()
     {
         wifiManager.startScan();
         List<ScanResult> wifiScanList = wifiManager.getScanResults();
@@ -49,7 +53,25 @@ public class Sniffer{
                 e.printStackTrace();
             }
         }
-    }      //Rozpoczęcia scanu
+    }
+
+/*
+* Metoda odpowiedzialna za zbieranie przez jakiś czas informacji o access poitach i tworzenie tablicy
+* JSONArray zawierająca uśrednione moce sygnałów.
+ */
+  /*  public void sredniaSkanu()
+    {
+        wifiManager.startScan();
+        List<ScanResult> list = wifiManager.getScanResults();
+
+        for(int i = 0; i< wifiScanList.size(); i++)
+        {
+            for(int j = 0; j<all.size(); j++)
+            {
+
+            }
+        }
+    }*/
 
     public String[] getList()
     {
@@ -61,16 +83,4 @@ public class Sniffer{
         return arr;
     }
 
-    public WifiScanReceier getReceier()
-    {
-        return wifiReceier;
-    }
-
-    class WifiScanReceier extends BroadcastReceiver
-    {
-        @Override
-        public void onReceive(Context context, Intent intent)
-        {
-        }
-    }
 }

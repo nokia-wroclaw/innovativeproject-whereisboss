@@ -5,41 +5,19 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
-    <ListView
-        android:id="@+id/list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/background_dark"
-        android:drawSelectorOnTop="true"
-        android:listSelector="@android:color/darker_gray"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/roomList" />
-
-    <Button
-        android:id="@+id/bntSniff"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/list"
-        android:layout_alignParentBottom="true"
-        android:text="Sniff"
-        android:onClick="bntClick" />
-
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Send"
         android:id="@+id/bntSend"
-        android:layout_alignTop="@+id/bntSniff"
-        android:layout_toRightOf="@+id/bntSniff"
-        android:layout_toEndOf="@+id/bntSniff"
-        android:onClick="bntClick" />
+        android:onClick="bntClick"
+        android:layout_below="@+id/roomList" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get room"
+        android:text="GetR"
         android:id="@+id/bntGetRoom"
         android:layout_alignBottom="@+id/bntSend"
         android:layout_toRightOf="@+id/bntSend"
@@ -50,9 +28,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/roomList"
-        android:layout_above="@+id/bntSend"
-        android:layout_centerHorizontal="true"
-        android:background="@android:color/background_dark" />
+        android:background="@android:color/background_dark"
+        android:layout_marginTop="47dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SCAN"
+        android:id="@+id/bntScan"
+        android:layout_toEndOf="@+id/bntGetRoom"
+        android:onClick="bntClick"
+        android:layout_alignBaseline="@+id/bntStopScan"
+        android:layout_alignBottom="@+id/bntStopScan"
+        android:layout_alignLeft="@+id/bntSend"
+        android:layout_alignStart="@+id/bntSend" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="STOP"
+        android:id="@+id/bntStopScan"
+        android:layout_toEndOf="@+id/bntGetRoom"
+        android:onClick="bntClick"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/bntGetRoom"
+        android:layout_marginBottom="98dp" />
 
 
 </RelativeLayout>
