@@ -31,8 +31,8 @@ public class ServerTransmission
         try
 
         {
-           this.socket = IO.socket("https://whereisboss.herokuapp.com");
-           // this.socket = IO.socket("https://whereisbosstest.herokuapp.com");
+           //this.socket = IO.socket("https://whereisboss.herokuapp.com");
+           this.socket = IO.socket("https://whereisbosstest.herokuapp.com");
 
         }catch(URISyntaxException e) {
                text = "jakis dziwny blad";
