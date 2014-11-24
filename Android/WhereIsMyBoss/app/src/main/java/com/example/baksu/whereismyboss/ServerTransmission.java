@@ -31,8 +31,8 @@ public class ServerTransmission
         try
 
         {
-           //this.socket = IO.socket("https://whereisboss.herokuapp.com");
-           this.socket = IO.socket("https://whereisbosstest.herokuapp.com");
+           this.socket = IO.socket("https://whereisboss.herokuapp.com");
+           //this.socket = IO.socket("https://whereisbosstest.herokuapp.com");
 
         }catch(URISyntaxException e) {
                text = "jakis dziwny blad";
@@ -79,11 +79,10 @@ public class ServerTransmission
 
     public void downloadRoom()                                  // Funckaj odpowiedzialna za pobieranie pokojów
     {
-        socket.emit("getData","test");              //TODO Zmienić potem na normalne getData
+        socket.emit("getDataTEST","test");              //TODO Zmienić potem na normalne getData
         socket.on("getData", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                Log.d("dostana dana", "dostalem odp");
                 JSONArray rooms = null;
                 JSONObject floor = (JSONObject)args[0];
                 try {
@@ -97,7 +96,6 @@ public class ServerTransmission
                 {
                     try {
                         lista[i] = rooms.getJSONObject(i).getString("name");
-                        Log.d("dostana dana", lista[i]);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

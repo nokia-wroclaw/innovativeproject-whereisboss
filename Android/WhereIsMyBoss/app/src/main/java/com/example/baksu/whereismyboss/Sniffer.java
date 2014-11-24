@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
+import android.net.wifi.*;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -41,7 +42,7 @@ public class Sniffer{
                 obj.put("bssid", wifiScanList.get(i).BSSID);
                 obj.put("level", wifiScanList.get(i).level);
                 obj.put("frequency", wifiScanList.get(i).frequency);
-                //obj.put("timestamp",wifiScanList);                    //Nie mam pojęcia jak to wyciągnąć
+                obj.put("timestamp",System.currentTimeMillis());                    //Pobiera obecny czas jaki jest wyświetlony na device
                 arr.put(i,obj);
 
             } catch (JSONException e) {
