@@ -32,7 +32,7 @@ public class BackgroundScanThread implements Runnable {
 
     public void stop() {
         running = false;
-        Log.i("Watek sie zatrzymal","");
+        Log.i("Watek się zatrzymal","");
     }
 
     public void run() {

@@ -1,7 +1,5 @@
 package com.example.baksu.whereismyboss;
 
-import android.os.AsyncTask;
-import android.os.Debug;
 import android.util.Log;
 
 import com.github.nkzawa.emitter.Emitter;
@@ -10,20 +8,17 @@ import com.github.nkzawa.socketio.client.Socket;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.*;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Baksu on 2014-11-11.
  */
 public class ServerTransmission
 {
-    private String lista[] = null;
+    private String rooms[] = null;
+    private String floors[] = null;
     Socket socket;
     private String text = "brak polaczaenia";
     private int response;
@@ -42,27 +37,6 @@ public class ServerTransmission
         {
                text = "jakis dziwny blad";
         }
-    }
-
-    public void createConnect(){                                        //nie wiem czy ta funkcja jest potrzebna ?
-        socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
-            @Override
-            public void call(Object... args)
-            {
-                text = "wyslane";
-            }
-        }).on("event", new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                text = "dostałem: " + args[0];
-                //socket.disconnect();
-            }
-        }).on(socket.EVENT_DISCONNECT, new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                text = "rozłączylo";
-            }
-        });
     }
 /*
 * Rozpoczęcie połączenia z serwerem
@@ -86,25 +60,29 @@ public class ServerTransmission
         socket.emit("foo", list);
     }
 
-    public void downloadRoom()                                  // Funckaj odpowiedzialna za pobieranie pokojów
+/*
+* Funkcja odpowiedzialna za pobieranie wszystkich danych o budynku
+ */
+    public void downloadBuilding(String login)
     {
-        socket.emit("getDataTEST","test");              //TODO Zmienić potem na normalne getData
+        rooms = null;
+        socket.emit("getDataTEST",login);              //TODO Zmienić potem na normalne getData
         socket.on("getData", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                JSONArray rooms = null;
+                JSONArray rooms = new JSONArray();
                 JSONObject floor = (JSONObject)args[0];
                 try {
                     rooms = floor.getJSONArray("rooms");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                lista = new String[rooms.length()];
+                ServerTransmission.this.rooms = new String[rooms.length()];
 
                 for(int i = 0; i < rooms.length(); i++)
                 {
                     try {
-                        lista[i] = rooms.getJSONObject(i).getString("name");
+                        ServerTransmission.this.rooms[i] = rooms.getJSONObject(i).getString("name");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -117,8 +95,12 @@ public class ServerTransmission
      */
     public int loginToServer(String login, String pass)
     {
+        Log.e(login,pass);
         response = 20;
-        socket.emit("LogIn",login,pass);
+        JSONArray log = new JSONArray();
+        log.put(login);
+        log.put(pass);
+        socket.emit("LogIn",log);
         socket.on("LogIn", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
@@ -136,7 +118,12 @@ public class ServerTransmission
 
     public String[] getRooms()
     {
-        return lista;
+        return rooms;
+    }
+
+    public String[] getFloors()
+    {
+        return floors;
     }
 
     public String getText()

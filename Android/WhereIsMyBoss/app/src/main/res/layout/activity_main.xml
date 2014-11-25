@@ -58,23 +58,31 @@
         android:onClick="bntClick"
         android:visibility="invisible"/>
 
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/floors"
+        android:layout_above="@+id/bntStartScan"
+        android:layout_alignParentLeft="true"
+        android:visibility="invisible" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rooms"
+        android:layout_above="@+id/bntStopScan"
+        android:layout_alignParentRight="true"
+        android:visibility="invisible" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="LOGOUT"
         android:id="@+id/bntLogoutServer"
-        android:layout_above="@+id/log"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:onClick="bntClick"
         android:visibility="invisible"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="LOGI"
-        android:id="@+id/log"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
 
     <ProgressBar
         android:id="@+id/loading_spinner"
