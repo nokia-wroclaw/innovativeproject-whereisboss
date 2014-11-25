@@ -1,61 +1,88 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/myRalaticeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Send"
-        android:id="@+id/bntSend"
-        android:onClick="bntClick"
-        android:layout_below="@+id/roomList" />
 
-    <Button
-        android:layout_width="wrap_content"
+    <EditText
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="GetR"
-        android:id="@+id/bntGetRoom"
-        android:layout_alignBottom="@+id/bntSend"
-        android:layout_toRightOf="@+id/bntSend"
-        android:layout_toEndOf="@+id/bntSend"
-        android:onClick="bntClick"/>
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/roomList"
-        android:background="@android:color/background_dark"
-        android:layout_marginTop="47dp"
+        android:id="@+id/loginServer"
+        android:hint="LOGIN"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_centerHorizontal="true"
+        />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:hint="PASSWORD"
+        android:id="@+id/passServer"
+        android:layout_below="@+id/loginServer"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SCAN"
-        android:id="@+id/bntScan"
-        android:layout_toEndOf="@+id/bntGetRoom"
+        android:text="LOGIN"
+        android:id="@+id/bntLoginServer"
+        android:layout_below="@+id/passServer"
+        android:layout_centerHorizontal="true"
+        android:onClick="bntClick" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="START SCAN"
+        android:id="@+id/bntStartScan"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:onClick="bntClick"
-        android:layout_alignBaseline="@+id/bntStopScan"
-        android:layout_alignBottom="@+id/bntStopScan"
-        android:layout_alignLeft="@+id/bntSend"
-        android:layout_alignStart="@+id/bntSend" />
+        android:visibility="invisible"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="STOP"
+        android:text="STOP SCAN"
         android:id="@+id/bntStopScan"
-        android:layout_toEndOf="@+id/bntGetRoom"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:onClick="bntClick"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/bntGetRoom"
-        android:layout_marginBottom="98dp" />
+        android:visibility="invisible"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LOGOUT"
+        android:id="@+id/bntLogoutServer"
+        android:layout_above="@+id/log"
+        android:layout_alignParentRight="true"
+        android:onClick="bntClick"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LOGI"
+        android:id="@+id/log"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <ProgressBar
+        android:id="@+id/loading_spinner"
+        style="?android:progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"/>
 
 </RelativeLayout>

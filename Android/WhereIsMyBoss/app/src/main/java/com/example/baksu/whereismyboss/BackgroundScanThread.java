@@ -13,11 +13,13 @@ public class BackgroundScanThread implements Runnable {
     private boolean running = true;
     private WifiManager wifiManager;
     private Sniffer sniffer;
+    private String room;
 
-    public BackgroundScanThread(WifiManager wM)
+    public BackgroundScanThread(WifiManager wM, String room)
     {
         this.wifiManager = wM;
         sniffer = new Sniffer(wifiManager);
+        this.room = room;
     }
 
     public void start() {
@@ -39,7 +41,7 @@ public class BackgroundScanThread implements Runnable {
             {
                 sniffer.startScan();
                 backgroundThread.sleep(500);
-                MainActivity.getServerTransmission().sendList(sniffer.getListToSend(),MainActivity.getWifiInfo().getMacAddress(),MainActivity.getRoom());
+                MainActivity.getServerTransmission().sendList(sniffer.getListToSend(),MainActivity.getWifiInfo().getMacAddress(),room);
                 backgroundThread.sleep(10000);
             }
             catch (InterruptedException e)

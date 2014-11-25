@@ -1,5 +1,6 @@
 package com.example.baksu.whereismyboss;
 
+import android.os.AsyncTask;
 import android.os.Debug;
 import android.util.Log;
 
@@ -25,16 +26,20 @@ public class ServerTransmission
     private String lista[] = null;
     Socket socket;
     private String text = "brak polaczaenia";
+    private int response;
 
-    public ServerTransmission()                     //Stworzenie socketa z serwerem
+    /*
+    * Konstruktor odpowiedzialny za stworzenie połączenia z serwerem
+     */
+    public ServerTransmission()
     {
         try
-
         {
            this.socket = IO.socket("https://whereisboss.herokuapp.com");
            //this.socket = IO.socket("https://whereisbosstest.herokuapp.com");
 
-        }catch(URISyntaxException e) {
+        }catch(URISyntaxException e)
+        {
                text = "jakis dziwny blad";
         }
     }
@@ -59,15 +64,19 @@ public class ServerTransmission
             }
         });
     }
-
+/*
+* Rozpoczęcie połączenia z serwerem
+ */
     public void startConnection()           // Rozpoczęcie połączenia z serwerem
     {
         socket.connect();
     }
-
-    public String getText()
+/*
+* Zakończenie połączenia z serwerem
+ */
+    public void endConnection()
     {
-        return text;
+        socket.disconnect();
     }
 
     public void sendList(JSONArray list, String mac, String room)              //Funkcja odpowiedzialna za przesłanie wszystkich access pointów
@@ -103,10 +112,36 @@ public class ServerTransmission
             }
         });
     }
+    /*
+    *Metoda odpowiedzialana za logowanie do serwera
+     */
+    public int loginToServer(String login, String pass)
+    {
+        response = 20;
+        socket.emit("LogIn",login,pass);
+        socket.on("LogIn", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                response = (Integer)args[0];
+            }
+        });
+
+        return response;
+    }
+
+    public int getResponseLogin()
+    {
+        return response;
+    }
 
     public String[] getRooms()
     {
         return lista;
+    }
+
+    public String getText()
+    {
+        return text;
     }
 
 }
