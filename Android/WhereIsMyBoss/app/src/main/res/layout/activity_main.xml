@@ -36,6 +36,22 @@
         android:layout_centerHorizontal="true"
         android:onClick="bntClick" />
 
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/floors"
+        android:layout_above="@+id/bntStartScan"
+        android:layout_alignParentLeft="true"
+        android:visibility="invisible" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rooms"
+        android:layout_above="@+id/bntStopScan"
+        android:layout_alignParentRight="true"
+        android:visibility="invisible" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,21 +74,17 @@
         android:onClick="bntClick"
         android:visibility="invisible"/>
 
-    <Spinner
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/floors"
-        android:layout_above="@+id/bntStartScan"
-        android:layout_alignParentLeft="true"
-        android:visibility="invisible" />
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/rooms"
-        android:layout_above="@+id/bntStopScan"
+        android:text="Report"
+        android:id="@+id/bntReportPos"
+        android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:visibility="invisible" />
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/bntStartScan"
+        android:onClick="bntClick"
+        android:visibility="invisible"/>
 
     <Button
         android:layout_width="wrap_content"

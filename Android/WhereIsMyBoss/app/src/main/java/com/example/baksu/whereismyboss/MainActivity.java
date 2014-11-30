@@ -42,6 +42,7 @@ public class MainActivity extends Activity {
     private Button bntStartScan;
     private Button bntStopScan;
     private Button bntLogOut;
+    private Button bntReport;
     private Spinner floors;
     private Spinner rooms;
 
@@ -59,6 +60,7 @@ public class MainActivity extends Activity {
         bntStartScan = (Button) findViewById(R.id.bntStartScan);
         bntStopScan = (Button) findViewById(R.id.bntStopScan);
         bntLogOut = (Button) findViewById(R.id.bntLogoutServer);
+        //bntReport = (Button) findViewById(R.id.bntReportPos);
         login = (TextView)findViewById(R.id.loginServer);
         pass = (TextView)findViewById(R.id.passServer);
         floors = (Spinner)findViewById(R.id.floors);
@@ -81,7 +83,7 @@ public class MainActivity extends Activity {
         super.onRestart();
     }
 
-    /*
+    /**
     * Metoda odpowiedzialna za klikanie przycisków
      */
     public void bntClick(View v)
@@ -92,10 +94,11 @@ public class MainActivity extends Activity {
             case R.id.bntStartScan: bntStartScan(); break;
             case R.id.bntStopScan: bntStopScan(); break;
             case R.id.bntLogoutServer: bntLogOutServer(); break;
+         //   case R.id.bntReportPos: bntReportPos(); break;
         }
     }
 
-    /*
+    /**
     * Metoda odpowiedzialna za obsługę przycisku rozpoczęcia skanowania
      */
     public void bntStartScan()
@@ -105,7 +108,7 @@ public class MainActivity extends Activity {
         Toast.makeText(context, "Skanowanie rozpoczęte", Toast.LENGTH_LONG).show();
     }
 
-    /*
+    /**
     * Metoda odpowiedzialna za obsługę przycisku zakończenia skanowania
      */
     public void bntStopScan()
@@ -114,7 +117,7 @@ public class MainActivity extends Activity {
         Toast.makeText(context, "Skanowanie zostało przerwane", Toast.LENGTH_LONG).show();
     }
 
-    /*
+    /**
     * Metoda odpowiedzialna za obsługiwanie logowania użytkownika na serwer
     */
     public void bntLogin()
@@ -131,12 +134,8 @@ public class MainActivity extends Activity {
         serverTransmission.loginToServer(userLogin, pass.getText().toString());
 
 
-        while((response = serverTransmission.getResponseLogin()) == 20){
-            try {
-                Thread.sleep(300);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        while((response = serverTransmission.getResponseLogin()) == 20){        //TODO:  zmienić na asynchroniczne łączenie
+
         }
       //  loading.setVisibility(View.INVISIBLE);
         Log.e("Po", Integer.toString(response));
@@ -164,14 +163,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    private class Test extends AsyncTask<String, Integer, String>{
-        @Override
-        protected String doInBackground(String... strings) {
-            return null;
-        }
-    }
-
-    /*
+    /**
     * Metoda odpowiedzialna za obłsugę rozłączania się z serwerem
      */
     public void bntLogOutServer()
@@ -190,6 +182,14 @@ public class MainActivity extends Activity {
         userLogin = null;
         login.setText("");
         pass.setText("");
+    }
+
+    /**
+     * Metoda odpowiedzialna za wysyłanie obecnej pozycji użytkownika co jakiś czas.
+     */
+    public void bntReportPos()
+    {
+
     }
 
     public static ServerTransmission getServerTransmission()
