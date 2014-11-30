@@ -80,6 +80,18 @@
         android:text="Report"
         android:id="@+id/bntReportPos"
         android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/bntStartScan"
+        android:onClick="bntClick"
+        android:visibility="invisible"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop Report"
+        android:id="@+id/bntStopReportPos"
+        android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/bntStartScan"

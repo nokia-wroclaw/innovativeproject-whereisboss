@@ -2,12 +2,10 @@ package com.example.baksu.whereismyboss;
 
 import android.app.Activity;
 import android.net.wifi.WifiInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.content.Context;
 import android.net.wifi.WifiManager;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -20,12 +18,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
-
 public class MainActivity extends Activity {
 
-    private BackgroundScanThread scanThread;
+    private BackgroundScanThread threadScan;
+    private ReportPositionThread threadReport;
     private static ServerTransmission serverTransmission;
     private static WifiInfo info;
     WifiManager wifiManager;
@@ -43,6 +39,7 @@ public class MainActivity extends Activity {
     private Button bntStopScan;
     private Button bntLogOut;
     private Button bntReport;
+    private Button bntStopReport;
     private Spinner floors;
     private Spinner rooms;
 
@@ -60,7 +57,8 @@ public class MainActivity extends Activity {
         bntStartScan = (Button) findViewById(R.id.bntStartScan);
         bntStopScan = (Button) findViewById(R.id.bntStopScan);
         bntLogOut = (Button) findViewById(R.id.bntLogoutServer);
-        //bntReport = (Button) findViewById(R.id.bntReportPos);
+        bntReport = (Button) findViewById(R.id.bntReportPos);
+        bntStopReport = (Button) findViewById(R.id.bntStopReportPos);
         login = (TextView)findViewById(R.id.loginServer);
         pass = (TextView)findViewById(R.id.passServer);
         floors = (Spinner)findViewById(R.id.floors);
@@ -94,7 +92,8 @@ public class MainActivity extends Activity {
             case R.id.bntStartScan: bntStartScan(); break;
             case R.id.bntStopScan: bntStopScan(); break;
             case R.id.bntLogoutServer: bntLogOutServer(); break;
-         //   case R.id.bntReportPos: bntReportPos(); break;
+            case R.id.bntReportPos: bntReportPos(); break;
+            case R.id.bntStopReportPos: bntStopReportPos(); break;
         }
     }
 
@@ -103,8 +102,8 @@ public class MainActivity extends Activity {
      */
     public void bntStartScan()
     {
-        scanThread = new BackgroundScanThread(wifiManager,rooms.getSelectedItem().toString());
-        scanThread.start();
+        threadScan = new BackgroundScanThread(wifiManager,rooms.getSelectedItem().toString());
+        threadScan.start();
         Toast.makeText(context, "Skanowanie rozpoczęte", Toast.LENGTH_LONG).show();
     }
 
@@ -113,7 +112,7 @@ public class MainActivity extends Activity {
      */
     public void bntStopScan()
     {
-        scanThread.stop();
+        threadScan.stop();
         Toast.makeText(context, "Skanowanie zostało przerwane", Toast.LENGTH_LONG).show();
     }
 
@@ -148,6 +147,8 @@ public class MainActivity extends Activity {
             bntStopScan.setVisibility(View.VISIBLE);
             bntStartScan.setVisibility(View.VISIBLE);
             bntLogOut.setVisibility(View.VISIBLE);
+            bntReport.setVisibility(View.VISIBLE);
+            bntStopReport.setVisibility(View.VISIBLE);
             floors.setVisibility(View.VISIBLE);
             rooms.setVisibility(View.VISIBLE);
         //Pobranie planu budynku
@@ -176,6 +177,8 @@ public class MainActivity extends Activity {
         bntStopScan.setVisibility(View.INVISIBLE);
         bntStartScan.setVisibility(View.INVISIBLE);
         bntLogOut.setVisibility(View.INVISIBLE);
+        bntReport.setVisibility(View.INVISIBLE);
+        bntStopReport.setVisibility(View.INVISIBLE);
         floors.setVisibility(View.INVISIBLE);
         rooms.setVisibility(View.INVISIBLE);
 
@@ -189,7 +192,15 @@ public class MainActivity extends Activity {
      */
     public void bntReportPos()
     {
+        threadReport = new ReportPositionThread(wifiManager);
+        threadReport.start();
+        Toast.makeText(context, "Reportowanie rozpoczęte", Toast.LENGTH_LONG).show();
+    }
 
+    public void bntStopReportPos()
+    {
+        threadReport.stop();
+        Toast.makeText(context, "Reportowanie zostało przerwane", Toast.LENGTH_LONG).show();
     }
 
     public static ServerTransmission getServerTransmission()

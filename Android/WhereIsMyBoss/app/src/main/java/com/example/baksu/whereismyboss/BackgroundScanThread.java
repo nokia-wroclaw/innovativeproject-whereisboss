@@ -42,7 +42,7 @@ public class BackgroundScanThread implements Runnable {
                 sniffer.startScan();
                 backgroundThread.sleep(500);
                 MainActivity.getServerTransmission().sendList(sniffer.getListToSend(),MainActivity.getWifiInfo().getMacAddress(),room);
-                backgroundThread.sleep(10000);
+                backgroundThread.sleep(30*1000);
             }
             catch (InterruptedException e)
             {

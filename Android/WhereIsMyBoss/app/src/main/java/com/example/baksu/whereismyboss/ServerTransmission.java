@@ -30,8 +30,8 @@ public class ServerTransmission
     {
         try
         {
-           this.socket = IO.socket("https://whereisboss.herokuapp.com");
-           //this.socket = IO.socket("https://whereisbosstest.herokuapp.com");
+           //this.socket = IO.socket("https://whereisboss.herokuapp.com");
+           this.socket = IO.socket("https://whereisbosstest.herokuapp.com");
 
         }catch(URISyntaxException e)
         {
@@ -58,6 +58,11 @@ public class ServerTransmission
         list.put(mac);
         list.put(room);
         socket.emit("foo", list);
+    }
+
+    public void snedReportPosision(JSONArray list)
+    {
+        socket.emit("setPosition",list);
     }
 
 /*
@@ -87,6 +92,7 @@ public class ServerTransmission
                         e.printStackTrace();
                     }
                 }
+
             }
         });
     }

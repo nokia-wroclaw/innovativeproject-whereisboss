@@ -39,8 +39,8 @@ public class ReportPositionThread implements Runnable
             {
                 sniffer.startScan();
                 backgroundThread.sleep(500);
-               // MainActivity.getServerTransmission().sendList(sniffer.getListToSend(),MainActivity.getWifiInfo().getMacAddress(),room);
-                backgroundThread.sleep(10000);
+                MainActivity.getServerTransmission().snedReportPosision(sniffer.getListToSend());
+                backgroundThread.sleep(180*1000);
             }
             catch (InterruptedException e)
             {
