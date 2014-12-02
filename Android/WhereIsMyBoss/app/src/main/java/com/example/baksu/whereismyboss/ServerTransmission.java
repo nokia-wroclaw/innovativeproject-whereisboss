@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Baksu on 2014-11-11.
@@ -30,8 +31,8 @@ public class ServerTransmission
     {
         try
         {
-           //this.socket = IO.socket("https://whereisboss.herokuapp.com");
-           this.socket = IO.socket("https://whereisbosstest.herokuapp.com");
+           this.socket = IO.socket("https://whereisboss.herokuapp.com");
+           //this.socket = IO.socket("https://whereisbosstest.herokuapp.com");
 
         }catch(URISyntaxException e)
         {
@@ -106,13 +107,20 @@ public class ServerTransmission
         JSONArray log = new JSONArray();
         log.put(login);
         log.put(pass);
-        socket.emit("LogIn",log);
+        try {
+            response = new AsyncLoginToServer(socket,log).execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+       /* socket.emit("LogIn",log);
         socket.on("LogIn", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 response = (Integer)args[0];
             }
-        });
+        });*/
 
         return response;
     }

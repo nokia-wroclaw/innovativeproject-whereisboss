@@ -1,25 +1,23 @@
 package com.example.baksu.whereismyboss;
 
+import android.app.ActivityManager;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
 /**
- * Created by Baksu on 2014-11-24.
- * Klasa odpowiedzialna za działanie skanowania w tle
+ * Created by Baksu on 2014-11-30.
  */
-public class BackgroundScanThread implements Runnable {
-
+public class ThreadReportPosition implements Runnable
+{
     Thread backgroundThread;
     private boolean running = true;
     private WifiManager wifiManager;
     private Sniffer sniffer;
-    private String room;
 
-    public BackgroundScanThread(WifiManager wM, String room)
+    public ThreadReportPosition(WifiManager wM)
     {
         this.wifiManager = wM;
         sniffer = new Sniffer(wifiManager);
-        this.room = room;
     }
 
     public void start() {
@@ -27,11 +25,12 @@ public class BackgroundScanThread implements Runnable {
             backgroundThread = new Thread( this );
             backgroundThread.start();
         }
-        Log.i("Watek wystartował","");
+        Log.i("Watek wystartował", "");
     }
 
     public void stop() {
         running = false;
+        backgroundThread.interrupted();
         Log.i("Watek się zatrzymal","");
     }
 
@@ -41,8 +40,8 @@ public class BackgroundScanThread implements Runnable {
             {
                 sniffer.startScan();
                 backgroundThread.sleep(500);
-                MainActivity.getServerTransmission().sendList(sniffer.getListToSend(),MainActivity.getWifiInfo().getMacAddress(),room);
-                backgroundThread.sleep(30*1000);
+                MainActivity.getServerTransmission().snedReportPosision(sniffer.getListToSend());
+                backgroundThread.sleep(180*1000);
             }
             catch (InterruptedException e)
             {

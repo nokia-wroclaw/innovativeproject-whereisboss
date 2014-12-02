@@ -20,8 +20,8 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-    private BackgroundScanThread threadScan;
-    private ReportPositionThread threadReport;
+    private ThreadBackgroundScan threadScan;
+    private ThreadReportPosition threadReport;
     private static ServerTransmission serverTransmission;
     private static WifiInfo info;
     WifiManager wifiManager;
@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = getApplicationContext();
-//        rooms = (Spinner)findViewById(R.id.roomList);
+
 // Znalezienie komponentów na GUI
         loading = (ProgressBar) findViewById(R.id.loading_spinner);
         mainLayout = (RelativeLayout)findViewById(R.id.myRalaticeLayout);
@@ -64,11 +64,9 @@ public class MainActivity extends Activity {
         floors = (Spinner)findViewById(R.id.floors);
         rooms = (Spinner)findViewById(R.id.rooms);
 
-
         serverTransmission = new ServerTransmission();
         wifiManager = (WifiManager)getSystemService(Context.WIFI_SERVICE);
         info = wifiManager.getConnectionInfo();
-
     }
 
     public void onPause()
@@ -100,9 +98,9 @@ public class MainActivity extends Activity {
     /**
     * Metoda odpowiedzialna za obsługę przycisku rozpoczęcia skanowania
      */
-    public void bntStartScan()
+    private void bntStartScan()
     {
-        threadScan = new BackgroundScanThread(wifiManager,rooms.getSelectedItem().toString());
+        threadScan = new ThreadBackgroundScan(wifiManager,rooms.getSelectedItem().toString());
         threadScan.start();
         Toast.makeText(context, "Skanowanie rozpoczęte", Toast.LENGTH_LONG).show();
     }
@@ -110,7 +108,7 @@ public class MainActivity extends Activity {
     /**
     * Metoda odpowiedzialna za obsługę przycisku zakończenia skanowania
      */
-    public void bntStopScan()
+    private void bntStopScan()
     {
         threadScan.stop();
         Toast.makeText(context, "Skanowanie zostało przerwane", Toast.LENGTH_LONG).show();
@@ -119,7 +117,7 @@ public class MainActivity extends Activity {
     /**
     * Metoda odpowiedzialna za obsługiwanie logowania użytkownika na serwer
     */
-    public void bntLogin()
+    private void bntLogin()
     {
         // Dwie linijki odpowiedzialne za chowanie klawiatury po przyciśnieciu Login
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -132,10 +130,9 @@ public class MainActivity extends Activity {
         userLogin = login.getText().toString();
         serverTransmission.loginToServer(userLogin, pass.getText().toString());
 
-
-        while((response = serverTransmission.getResponseLogin()) == 20){        //TODO:  zmienić na asynchroniczne łączenie
-
-        }
+        response = serverTransmission.getResponseLogin();
+        //while((response = serverTransmission.getResponseLogin()) == 20){        //TODO:  zmienić na asynchroniczne łączenie
+       // }
       //  loading.setVisibility(View.INVISIBLE);
         Log.e("Po", Integer.toString(response));
         if (response == 0) {
@@ -167,7 +164,7 @@ public class MainActivity extends Activity {
     /**
     * Metoda odpowiedzialna za obłsugę rozłączania się z serwerem
      */
-    public void bntLogOutServer()
+    private void bntLogOutServer()
     {
         serverTransmission.endConnection();
         Toast.makeText(context, "Zostałeś wylogowany", Toast.LENGTH_LONG).show();
@@ -190,14 +187,17 @@ public class MainActivity extends Activity {
     /**
      * Metoda odpowiedzialna za wysyłanie obecnej pozycji użytkownika co jakiś czas.
      */
-    public void bntReportPos()
+    private void bntReportPos()
     {
-        threadReport = new ReportPositionThread(wifiManager);
+        threadReport = new ThreadReportPosition(wifiManager);
         threadReport.start();
         Toast.makeText(context, "Reportowanie rozpoczęte", Toast.LENGTH_LONG).show();
     }
 
-    public void bntStopReportPos()
+    /**
+     * Metoda odpowiedzialna za zatrzymanie wysyłania obecnej pozycji użytkownika.
+     */
+    private void bntStopReportPos()
     {
         threadReport.stop();
         Toast.makeText(context, "Reportowanie zostało przerwane", Toast.LENGTH_LONG).show();
