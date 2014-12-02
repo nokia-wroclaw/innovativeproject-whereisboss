@@ -1,6 +1,5 @@
 package com.example.baksu.whereismyboss;
 
-import android.app.ActivityManager;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
@@ -40,7 +39,7 @@ public class ThreadReportPosition implements Runnable
             {
                 sniffer.startScan();
                 backgroundThread.sleep(500);
-                MainActivity.getServerTransmission().snedReportPosision(sniffer.getListToSend());
+                ActivityLogin.getServerTransmission().snedReportPosision(sniffer.getListToSend());
                 backgroundThread.sleep(180*1000);
             }
             catch (InterruptedException e)

@@ -100,29 +100,20 @@ public class ServerTransmission
     /*
     *Metoda odpowiedzialana za logowanie do serwera
      */
-    public int loginToServer(String login, String pass)
+    public void loginToServer(String login, String pass)
     {
-        Log.e(login,pass);
         response = 20;
         JSONArray log = new JSONArray();
         log.put(login);
         log.put(pass);
-        try {
-            response = new AsyncLoginToServer(socket,log).execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-       /* socket.emit("LogIn",log);
+
+        socket.emit("LogIn",log);
         socket.on("LogIn", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 response = (Integer)args[0];
             }
-        });*/
-
-        return response;
+        });
     }
 
     public int getResponseLogin()
