@@ -6,31 +6,45 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".ActivityMain">
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".ActivityScan">
 
-
-    <Button
+    <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SCAN"
-        android:id="@+id/bntScan"
-        android:layout_above="@+id/bntReport"
+        android:id="@+id/spinBuildings"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinFloors"
+        android:layout_below="@+id/spinBuildings"
+        android:layout_centerHorizontal="true" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinRooms"
+        android:layout_below="@+id/spinFloors"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="REPORT"
-        android:id="@+id/bntReport"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:text="Start Scan"
+        android:id="@+id/bntStartScan"
+        android:layout_below="@+id/spinRooms"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="53dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SEARCH"
-        android:id="@+id/bntSearch"
-        android:layout_below="@+id/bntReport"
+        android:text="Stop Scan"
+        android:id="@+id/bntStopScan"
+        android:layout_below="@+id/bntStartScan"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -40,15 +54,5 @@
         android:id="@+id/bntLogout"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true" />
-
-    <ProgressBar
-        android:id="@+id/loading_spinner"
-        style="?android:progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:visibility="invisible"/>
-
 
 </RelativeLayout>

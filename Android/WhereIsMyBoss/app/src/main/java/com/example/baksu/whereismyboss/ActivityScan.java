@@ -6,17 +6,15 @@ import android.os.Bundle;
 /**
  * Created by Baksu on 2014-12-02.
  */
-public class LoadingActivity extends Activity {
+public class ActivityScan extends Activity {
 
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.android_loading_activity);
+        setContentView(R.layout.scan_activity);
     }
 
     @Override
     public void onBackPressed() {
-        finish();
+        this.finish();
     }
-
 }

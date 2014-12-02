@@ -9,21 +9,18 @@ import android.net.wifi.WifiManager;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Handler;
+import android.os.Message;
 
 public class ActivityLogin extends Activity {
 
     private ThreadLogin threadLogin;
     private static ServerTransmission serverTransmission;
-    private static WifiInfo info;
-    WifiManager wifiManager;
+    private static Handler handler;
 
     //Obiekty GUI
     private TextView login;
@@ -31,6 +28,8 @@ public class ActivityLogin extends Activity {
     private ProgressBar loading;
     private RelativeLayout mainLayout;
 
+    private static WifiInfo info;           //TODO: Czy to jest potrzebne ?
+    WifiManager wifiManager;
 
     public void onCreate(Bundle savedInstanceState)
     {
@@ -105,7 +104,16 @@ public class ActivityLogin extends Activity {
 
         loading.setVisibility(View.VISIBLE);
 
-        threadLogin = new ThreadLogin(serverTransmission,login.getText().toString(), pass.getText().toString(),getApplicationContext());
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                String message = (String) msg.obj;
+                Toast.makeText(ActivityLogin.this,message, Toast.LENGTH_LONG).show();
+                loading.setVisibility(View.INVISIBLE);
+            }
+        };
+
+        threadLogin = new ThreadLogin(serverTransmission,login.getText().toString(), pass.getText().toString(),getApplicationContext(),handler);
         threadLogin.start();
     }
 

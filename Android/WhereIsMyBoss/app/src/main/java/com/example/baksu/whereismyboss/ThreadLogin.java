@@ -2,9 +2,8 @@ package com.example.baksu.whereismyboss;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.WifiManager;
-import android.util.Log;
-import android.widget.Toast;
+import android.os.Handler;
+import android.os.Message;
 
 /**
  * Created by Baksu on 2014-12-02.
@@ -17,13 +16,16 @@ public class ThreadLogin implements Runnable {
     private String pass;
     private Context context;
     private boolean running = false;
+    private Handler handler;
+    private Message msg = Message.obtain();
 
-    public ThreadLogin (ServerTransmission serverTransmission, String login, String pass, Context context)
+    public ThreadLogin (ServerTransmission serverTransmission, String login, String pass, Context context, Handler handler)
     {
         this.servTrans = serverTransmission;
         this.login = login;
         this.pass = pass;
         this.context = context;
+        this.handler = handler;
     }
 
     public void start()
@@ -54,9 +56,13 @@ public class ThreadLogin implements Runnable {
             loading.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(loading);
         }else if(response == 1){
-            Toast.makeText(context, "Brak podanego użytkownika w bazie", Toast.LENGTH_LONG).show();
+            msg.obj = "Brak podanego użytkownika w bazie";
+            msg.setTarget(handler);
+            msg.sendToTarget();
         }else if(response == 2){
-            Toast.makeText(context, "Błędne hasło", Toast.LENGTH_LONG).show();
+            msg.obj = "Błędne hasło";
+            msg.setTarget(handler);
+            msg.sendToTarget();
         }
 
         thread.interrupt();

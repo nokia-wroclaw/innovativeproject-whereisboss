@@ -24,6 +24,9 @@
         <activity
             android:name=".ActivityMain">
         </activity>
+        <activity
+            android:name=".ActivityScan">
+        </activity>
     </application>
 
 </manifest>
