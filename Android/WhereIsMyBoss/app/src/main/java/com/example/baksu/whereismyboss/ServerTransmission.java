@@ -1,5 +1,11 @@
 package com.example.baksu.whereismyboss;
 
+import android.app.Service;
+import android.content.Intent;
+import android.os.Binder;
+import android.os.IBinder;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.github.nkzawa.emitter.Emitter;
@@ -16,8 +22,9 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by Baksu on 2014-11-11.
  */
-public class ServerTransmission
+public class ServerTransmission extends Service
 {
+    private final IBinder mBinder = new MyBinder();
     private String rooms[] = null;
     private String floors[] = null;
     Socket socket;
@@ -33,15 +40,41 @@ public class ServerTransmission
         {
            this.socket = IO.socket("https://whereisboss.herokuapp.com");
            //this.socket = IO.socket("https://whereisbosstest.herokuapp.com");
+            socket.connect();
 
         }catch(URISyntaxException e)
         {
                text = "jakis dziwny blad";
         }
     }
-/*
-* Rozpoczęcie połączenia z serwerem
- */
+
+    public int onStartCommand()
+    {
+        try
+        {
+            this.socket = IO.socket("https://whereisboss.herokuapp.com");
+        }catch(URISyntaxException e)
+        {
+        //TODO: Dodać jakiś wyjątek
+        }
+
+        return Service.START_NOT_STICKY;
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return mBinder;
+    }
+
+    public class MyBinder extends Binder {
+        ServerTransmission getService() {
+            return ServerTransmission.this;
+        }
+    }
+
+    /*
+    * Rozpoczęcie połączenia z serwerem
+     */
     public void startConnection()           // Rozpoczęcie połączenia z serwerem
     {
         socket.connect();

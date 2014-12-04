@@ -15,7 +15,8 @@
         android:text="SCAN"
         android:id="@+id/bntScan"
         android:layout_above="@+id/bntReport"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="bntClick" />
 
     <Button
         android:layout_width="wrap_content"
@@ -23,7 +24,8 @@
         android:text="REPORT"
         android:id="@+id/bntReport"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="bntClick" />
 
     <Button
         android:layout_width="wrap_content"
@@ -31,7 +33,8 @@
         android:text="SEARCH"
         android:id="@+id/bntSearch"
         android:layout_below="@+id/bntReport"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="bntClick" />
 
     <Button
         android:layout_width="wrap_content"
@@ -39,7 +42,8 @@
         android:text="LOGOUT"
         android:id="@+id/bntLogout"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:onClick="bntClick"/>
 
     <ProgressBar
         android:id="@+id/loading_spinner"

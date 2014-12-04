@@ -1,11 +1,13 @@
 package com.example.baksu.whereismyboss;
 
 import android.app.Activity;
+import android.content.*;
+import android.content.ServiceConnection;
 import android.net.wifi.WifiInfo;
 import android.os.Bundle;
 
-import android.content.Context;
 import android.net.wifi.WifiManager;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -35,9 +37,11 @@ public class ActivityLogin extends Activity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
-        serverTransmission = new ServerTransmission();
-        serverTransmission.startConnection();
-
+        Intent service = new Intent(this, ServerTransmission.class);
+        this.startService(service);
+        bindService(service, bService, this.BIND_AUTO_CREATE);
+        //serverTransmission = new ServerTransmission();
+        //serverTransmission.startConnection();
 
 
 // Znalezienie komponentów na GUI
@@ -54,6 +58,8 @@ public class ActivityLogin extends Activity {
       // loading = new Intent(getApplicationContext(), LoadingActivity.class);
 
     }
+
+
 
     public void onPause()
     {
@@ -142,5 +148,15 @@ public class ActivityLogin extends Activity {
         return info;
     }
 
+    ServiceConnection bService = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder binder) {
+            ServerTransmission.MyBinder b = (ServerTransmission.MyBinder) binder;
+            serverTransmission = b.getService();
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            serverTransmission = null;
+        }
+    };
 }
 
