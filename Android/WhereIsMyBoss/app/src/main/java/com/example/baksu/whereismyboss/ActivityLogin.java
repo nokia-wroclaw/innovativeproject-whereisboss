@@ -30,7 +30,6 @@ public class ActivityLogin extends Activity {
     private ProgressBar loading;
     private RelativeLayout mainLayout;
 
-    private static WifiInfo info;           //TODO: Czy to jest potrzebne ?
     WifiManager wifiManager;
 
     public void onCreate(Bundle savedInstanceState)
@@ -52,7 +51,6 @@ public class ActivityLogin extends Activity {
 
 
         wifiManager = (WifiManager)getSystemService(Context.WIFI_SERVICE);
-        info = wifiManager.getConnectionInfo();
 
 
       // loading = new Intent(getApplicationContext(), LoadingActivity.class);
@@ -60,6 +58,11 @@ public class ActivityLogin extends Activity {
     }
 
 
+    public void onDestroy()
+    {
+        super.onDestroy();
+        this.unbindService(bService);
+    }
 
     public void onPause()
     {
@@ -84,21 +87,6 @@ public class ActivityLogin extends Activity {
         }
     }
 
-/*
-    private void bntStartScan()
-    {
-        threadScan = new ThreadBackgroundScan(wifiManager,rooms.getSelectedItem().toString());
-        threadScan.start();
-        Toast.makeText(context, "Skanowanie rozpoczęte", Toast.LENGTH_LONG).show();
-    }
-
-    private void bntStopScan()
-    {
-        threadScan.stop();
-        Toast.makeText(context, "Skanowanie zostało przerwane", Toast.LENGTH_LONG).show();
-    }
-*/
-
     /**
     * Metoda odpowiedzialna za obsługiwanie logowania użytkownika na serwer
     */
@@ -109,6 +97,8 @@ public class ActivityLogin extends Activity {
         imm.hideSoftInputFromWindow(mainLayout.getWindowToken(), 0);
 
         loading.setVisibility(View.VISIBLE);
+
+        serverTransmission.startConnection();
 
         handler = new Handler() {
             @Override
@@ -123,29 +113,10 @@ public class ActivityLogin extends Activity {
         threadLogin.start();
     }
 
-/*
-    private void bntReportPos()
-    {
-        threadReport = new ThreadReportPosition(wifiManager);
-        threadReport.start();
-        Toast.makeText(context, "Reportowanie rozpoczęte", Toast.LENGTH_LONG).show();
-    }
-
-    private void bntStopReportPos()
-    {
-        threadReport.stop();
-        Toast.makeText(context, "Reportowanie zostało przerwane", Toast.LENGTH_LONG).show();
-    }
-    */
 
     public static ServerTransmission getServerTransmission()
     {
         return serverTransmission;
-    }
-
-    public static WifiInfo getWifiInfo()
-    {
-        return info;
     }
 
     ServiceConnection bService = new ServiceConnection() {

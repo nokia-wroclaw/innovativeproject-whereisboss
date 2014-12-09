@@ -12,11 +12,13 @@ public class ThreadReportPosition implements Runnable
     private boolean running = true;
     private WifiManager wifiManager;
     private Sniffer sniffer;
+    private ServerTransmission serverTransmission;
 
-    public ThreadReportPosition(WifiManager wM)
+    public ThreadReportPosition(WifiManager wM, ServerTransmission serverTransmission)
     {
         this.wifiManager = wM;
         sniffer = new Sniffer(wifiManager);
+        this.serverTransmission = serverTransmission;
     }
 
     public void start() {
@@ -39,7 +41,7 @@ public class ThreadReportPosition implements Runnable
             {
                 sniffer.startScan();
                 backgroundThread.sleep(500);
-                ActivityLogin.getServerTransmission().snedReportPosision(sniffer.getListToSend());
+                serverTransmission.sendReportPosition(sniffer.getListToSend());
                 backgroundThread.sleep(180*1000);
             }
             catch (InterruptedException e)

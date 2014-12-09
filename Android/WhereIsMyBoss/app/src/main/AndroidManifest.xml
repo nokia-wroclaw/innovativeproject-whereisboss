@@ -31,6 +31,9 @@
         <activity
             android:name=".ActivityScan">
         </activity>
+        <activity
+            android:name=".ActivityReport">
+        </activity>
     </application>
 
 </manifest>

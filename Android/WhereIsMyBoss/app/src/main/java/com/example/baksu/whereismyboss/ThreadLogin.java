@@ -55,9 +55,6 @@ public class ThreadLogin implements Runnable {
 
         if(response == 0){
             Intent loading = new Intent(context, ActivityMain.class);
-           // Bundle b = new Bundle();
-            //b.putParcelable("nazwa", servTrans);
-            //loading.putExtras(b);
             loading.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(loading);
         }else if(response == 1){

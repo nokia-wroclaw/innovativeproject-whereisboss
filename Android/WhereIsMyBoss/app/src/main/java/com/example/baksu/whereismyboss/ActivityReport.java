@@ -9,33 +9,27 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 /**
- * Created by Baksu on 2014-12-02.
+ * Created by Baksu on 2014-12-08.
  */
-public class ActivityMain extends Activity {
+public class ActivityReport extends Activity {
 
     private ServerTransmission serverTransmission;
-    private Intent service;
-    private ThreadBuildingDownloads threadScan;
+    private ThreadReportPosition threadReport;
     private Context context;
-    private ProgressBar loading;
+    private WifiManager wifiManager;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
-        loading = (ProgressBar)findViewById(R.id.loading_spinner);
+        setContentView(R.layout.report_activity);
+
         context = getApplicationContext();
+        wifiManager = (WifiManager)getSystemService(Context.WIFI_SERVICE);
+
         Intent service = new Intent(this, ServerTransmission.class);
         bindService(service, bService, this.BIND_AUTO_CREATE);
-    }
-
-    public void onResume()
-    {
-        super.onResume();
-        loading.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -49,36 +43,31 @@ public class ActivityMain extends Activity {
     {
         switch(v.getId())
         {
-            case R.id.bntScan: bntScan(); break;
-            case R.id.bntReport: bntReport(); break;
-            case R.id.bntSearch: bntSearch(); break;
-            case R.id.bntLogout: bntLogout(); break;//TODO: Dorobić przycisk logout
+            case R.id.bntStartReport: bntStartReport(); break;
+            case R.id.bntStopReport: bntStopReport(); break;
+           // case R.id.bntLogout: bntLogout(); break;  //TODO: Dodać obsługę logout
         }
     }
 
-    public void bntScan()
+    /**
+     * Metoda odpowiedzialna za rozpoczecie reportowania pozycji uzytkownika
+     */
+    private void bntStartReport()
     {
-        loading.setVisibility(View.VISIBLE);
-        threadScan = new ThreadBuildingDownloads(serverTransmission,context);
-        threadScan.start();
+        threadReport = new ThreadReportPosition(wifiManager,serverTransmission);
+        threadReport.start();
+        Toast.makeText(context, "Reportowanie rozpoczęte", Toast.LENGTH_LONG).show();
     }
 
-    public void bntReport()
+    /**
+     * Metoda odpowiedzialna za zakończenie reportowania pozycji uzytkownika
+     */
+    private void bntStopReport()
     {
-        Intent report = new Intent(context, ActivityReport.class);
-        report.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(report);
+        threadReport.stop();
+        Toast.makeText(context, "Reportowanie zostało przerwane", Toast.LENGTH_LONG).show();
     }
 
-    public void bntSearch()
-    {
-
-    }
-
-    public void bntLogout()
-    {
-
-    }
 
     ServiceConnection bService = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder binder) {

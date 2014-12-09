@@ -13,12 +13,16 @@ public class ThreadBackgroundScan implements Runnable {
     private boolean running = true;
     private WifiManager wifiManager;
     private Sniffer sniffer;
+    private String building;
+    private String floor;
     private String room;
 
-    public ThreadBackgroundScan(WifiManager wM, String room)
+    public ThreadBackgroundScan(WifiManager wM,String building, String floor, String room)
     {
         this.wifiManager = wM;
         sniffer = new Sniffer(wifiManager);
+        this.building = building;
+        this.floor = floor;
         this.room = room;
     }
 
@@ -42,7 +46,7 @@ public class ThreadBackgroundScan implements Runnable {
             {
                 sniffer.startScan();
                 backgroundThread.sleep(500);
-                ActivityLogin.getServerTransmission().sendList(sniffer.getListToSend(), ActivityLogin.getWifiInfo().getMacAddress(),room);
+                ActivityLogin.getServerTransmission().sendList(sniffer.getListToSend(), building,floor,room);
                 backgroundThread.sleep(30*1000);
             }
             catch (InterruptedException e)
