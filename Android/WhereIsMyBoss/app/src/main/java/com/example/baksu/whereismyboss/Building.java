@@ -8,15 +8,13 @@ import java.util.List;
  */
 public class Building {
     public String name;
-    public List<Floor> floors = new ArrayList<Floor>();
+    public String id;
+    public Floor[] floors;
 
-    public Building(String name, Floor floor){
+    public Building(String name,String id,  Floor[] floor){
         this.name = name;
-        this.floors.add(floor);
+        this.floors = floor;
+        this.id = id;
     }
 
-    public void addFloor(Floor floor)
-    {
-        floors.add(floor);
-    }
 }

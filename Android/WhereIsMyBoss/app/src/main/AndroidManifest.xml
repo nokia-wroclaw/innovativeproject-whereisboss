@@ -26,13 +26,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ActivityMain">
+            android:name=".ActivityMain"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".ActivityScan">
+            android:name=".ActivityScan"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".ActivityReport">
+            android:name=".ActivityReport"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".ActivitySearch">
         </activity>
     </application>
 

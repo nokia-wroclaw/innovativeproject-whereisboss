@@ -72,7 +72,9 @@ public class ActivityMain extends Activity {
 
     public void bntSearch()
     {
-
+        Intent search = new Intent(context, ActivitySearch.class);
+        search.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(search);
     }
 
     public void bntLogout()

@@ -20,13 +20,13 @@ public class Sniffer{
     private List<ScanResult> all;
     private List<ScanResult> numbers;
 
-/*
+/**
 * Konstruktor wifiManagere'a
  */
     public Sniffer(WifiManager wM) {
         this.wifiManager = wM;
     }
-/*
+/**
 * Metoda odpowiedzialna za przeskanowanie wszystkich dostępnych access pointów w zasięgu sygnału
 * i stworzenie na ich podstawie JSONArray w której są JSONObject.
 *
@@ -55,7 +55,54 @@ public class Sniffer{
         }
     }
 
-/*
+    public void clearArr()
+    {
+        arr = new JSONArray();
+    }
+
+    public void oneScan()
+    {
+        wifiManager.startScan();
+        List<ScanResult> wifiScanList = wifiManager.getScanResults();
+        lista = new String[wifiScanList.size()];
+
+        for(int i = 0; i < wifiScanList.size(); i++) {
+            for (int j = 0; j < arr.length(); j++) {
+                try {
+                    if (wifiScanList.get(i).BSSID.equals(arr.getJSONObject(j).getString("bssid")))
+                    {
+                        arr.getJSONObject(j).put("level", arr.getJSONObject(j).getInt("level") + wifiScanList.get(i).level);
+                        arr.getJSONObject(j).put("raz", arr.getJSONObject(j).getInt("raz") + 1);
+                    }else
+                    {
+                        JSONObject obj = new JSONObject();
+                        obj.put("ssid", wifiScanList.get(i).SSID);
+                        obj.put("bssid", wifiScanList.get(i).BSSID);
+                        obj.put("level", wifiScanList.get(i).level);
+                        obj.put("frequency", wifiScanList.get(i).frequency);
+                        obj.put("timestamp",System.currentTimeMillis());                    //Pobiera obecny czas jaki jest wyświetlony na device
+                        obj.put("raz",1);
+                        arr.put(obj);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void averageLevel()
+    {
+        for (int i = 0; i < arr.length(); i++) {
+            try {
+                arr.getJSONObject(i).put("level", arr.getJSONObject(i).getInt("level") / arr.getJSONObject(i).getInt("raz"));
+                arr.getJSONObject(i).remove("raz");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+/**
 * Metoda odpowiedzialna za zbieranie przez jakiś czas informacji o access poitach i tworzenie tablicy
 * JSONArray zawierająca uśrednione moce sygnałów.
  */

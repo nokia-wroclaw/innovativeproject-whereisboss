@@ -28,18 +28,13 @@ import java.util.concurrent.ExecutionException;
 public class ServerTransmission extends Service
 {
     private final IBinder mBinder = new MyBinder();
-    public String tescik = "Dobry server podpiety";
-    Socket socket;
-    private String text = "brak polaczaenia";
+    private Socket socket;
     private int response;
     private List<Building> buildings;
-    private Floor floor;
+    private Floor[] floors;
+    private Room[] rooms;
 
-    int j=0;
-    String building;
-
-
-    /*
+    /**
     * Konstruktor odpowiedzialny za stworzenie połączenia z serwerem
      */
     public ServerTransmission()
@@ -47,13 +42,14 @@ public class ServerTransmission extends Service
         try
         {
             //this.socket = IO.socket("http://stormy-shore-9392.herokuapp.com/");
-            this.socket = IO.socket("https://whereisboss.herokuapp.com");
-           //this.socket = IO.socket("https://whereisbosstest.herokuapp.com");
+            //this.socket = IO.socket("https://whereisboss.herokuapp.com");
+           this.socket = IO.socket("https://whereisbosstest.herokuapp.com");
+          
           //  socket.connect();
 
         }catch(URISyntaxException e)
         {
-              text = "jakis dziwny blad";
+              //ToDo: dodać wyjatek
         }
     }
 
@@ -61,7 +57,8 @@ public class ServerTransmission extends Service
     {
         try
         {
-            this.socket = IO.socket("https://whereisboss.herokuapp.com");
+            //this.socket = IO.socket("https://whereisboss.herokuapp.com");
+            this.socket = IO.socket("https://whereisbosstest.herokuapp.com");
             //this.socket = IO.socket("http://stormy-shore-9392.herokuapp.com/");
         }catch(URISyntaxException e)
         {
@@ -82,22 +79,30 @@ public class ServerTransmission extends Service
         }
     }
 
-    /*
+    /**
     * Rozpoczęcie połączenia z serwerem
      */
     public void startConnection()           // Rozpoczęcie połączenia z serwerem
     {
         socket.connect();
     }
-/*
-* Zakończenie połączenia z serwerem
- */
+
+    /**
+    * Zakończenie połączenia z serwerem
+    */
     public void endConnection()
     {
         socket.disconnect();
     }
 
-    public void sendList(JSONArray list, String building, String floor, String room)              //Funkcja odpowiedzialna za przesłanie wszystkich access pointów
+    /**
+     * Metoda odpowiedzialna za przesyłanie wszystkich access pointów
+     * @param list
+     * @param building
+     * @param floor
+     * @param room
+     */
+    public void sendList(JSONArray list, String building, String floor, String room)
     {
         list.put(building);
         list.put(floor);
@@ -111,57 +116,55 @@ public class ServerTransmission extends Service
     }
 
 /**
- * Funkcja odpowiedzialna za pobieranie wszystkich danych o budynku
+ * Funkcja odpowiedzialna za pobieranie wszystkich danych o budynkach
  */
     public void downloadBuilding()
     {
         buildings = null;
 
-        socket.emit("getAll","kamil2");            //TODO: Zminić, żeby nie wpisywać loginu
+        socket.emit("getAll","t3");            //TODO: Zminić, żeby nie wpisywać loginu !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         socket.on("getAll", new Emitter.Listener() {
             @Override
+
             public void call(Object... args) {
                 JSONArray info = (JSONArray)args[0];
+                JSONArray floorsJA = null;
                 JSONArray roomsJA = null;
                 buildings = new ArrayList<Building>();
                 
                 try {
-                    building = info.getJSONObject(0).getString("building");
-                    roomsJA = (JSONArray)info.getJSONObject(0).get("rooms");
-                    List<String> rooms =  new ArrayList<String>();
-                    for (int j=0; j < roomsJA.length() ;j++)
+                    for(int i = 0; i < info.length(); i++)
                     {
-                        rooms.add(roomsJA.getString(j));
-                    }
-                    floor = new Floor(info.getJSONObject(0).getString("floor"),rooms);
+                        floorsJA = (JSONArray) info.getJSONObject(i).get("floors");
+                        floors = new Floor[floorsJA.length()];
+                        for(int j = 0; j < floorsJA.length(); j++)
+                        {
+                            roomsJA = (JSONArray) floorsJA.getJSONObject(j).get("rooms");
+                            rooms = new Room[roomsJA.length()];
+                            for(int k = 0 ; k < roomsJA.length(); k++)
+                            {
+                                Log.e("name",roomsJA.getJSONObject(k).getString("room"));
+                                Log.e("id",roomsJA.getJSONObject(k).getString("_id"));
+                                rooms[k] = new Room(roomsJA.getJSONObject(k).getString("room"),roomsJA.getJSONObject(k).getString("_id"));
+                            }
+                            floors[j] = new Floor(floorsJA.getJSONObject(j).getString("floor"),floorsJA.getJSONObject(j).getString("_id"),rooms);
+                        }
+                        buildings.add(new Building(info.getJSONObject(i).getString("building"),info.getJSONObject(i).getString("_id"),floors));
 
-                    buildings.add(new Building(building,floor));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                for(int i = 1; i < info.length(); i++)    //TODO: Dodać, zeby kolejność budynków nie była ważna
-                {
-                    try {
-                        building = info.getJSONObject(i).getString("building");
-                        roomsJA = (JSONArray)info.getJSONObject(i).get("rooms");
+                        /*building = info.getJSONObject(0).getString("building");
+                        roomsJA = (JSONArray)info.getJSONObject(0).get("rooms");
                         List<String> rooms =  new ArrayList<String>();
                         for (int j=0; j < roomsJA.length() ;j++)
                         {
                             rooms.add(roomsJA.getString(j));
                         }
+                        room = new Room();
+                        floor = new Floor(info.getJSONObject(0).getString("floor"),rooms);
 
-                        floor = new Floor(info.getJSONObject(i).getString("floor"),rooms);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        buildings.add(new Building(building,floor));*/
                     }
-                    if(buildings.get(buildings.size() - 1).name.equals(building))
-                    {
-                        buildings.get(buildings.size() - 1).addFloor(floor);
-                    }else
-                    {
-                        buildings.add(new Building(building,floor));
-                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -212,11 +215,6 @@ public class ServerTransmission extends Service
     public List<Building>getBuildings()
     {
         return buildings;
-    }
-
-    public String getText()
-    {
-        return text;
     }
 
 }

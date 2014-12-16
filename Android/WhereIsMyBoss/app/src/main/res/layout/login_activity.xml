@@ -36,6 +36,15 @@
         android:layout_centerHorizontal="true"
         android:onClick="bntClick" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SEARCH"
+        android:id="@+id/bntSearch"
+        android:layout_below="@+id/bntLoginServer"
+        android:layout_centerHorizontal="true"
+        android:onClick="bntClick" />
+
     <ProgressBar
         android:id="@+id/loading_spinner"
         style="?android:progressBarStyleLarge"

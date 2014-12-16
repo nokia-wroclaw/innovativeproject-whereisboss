@@ -1,5 +1,6 @@
 package com.example.baksu.whereismyboss;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,10 +8,12 @@ import java.util.List;
  */
 public class Floor {
     public String name;
-    public List<String> rooms;
+    public String id;
+    public Room[] rooms;
 
-    public Floor(String name, List<String> rooms){
+    public Floor(String name, String id, Room[] rooms){
         this.name = name;
         this.rooms = rooms;
+        this.id = id;
     }
 }

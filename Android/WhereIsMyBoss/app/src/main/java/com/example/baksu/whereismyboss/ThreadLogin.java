@@ -2,17 +2,15 @@ package com.example.baksu.whereismyboss;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.SyncStateContract;
 
 /**
  * Created by Baksu on 2014-12-02.
  */
 public class ThreadLogin implements Runnable {
 
-    private ServerTransmission servTrans;
+    private ServerTransmission serverTransmission;
     private Thread thread;
     private String login;
     private String pass;
@@ -23,7 +21,7 @@ public class ThreadLogin implements Runnable {
 
     public ThreadLogin (ServerTransmission serverTransmission, String login, String pass, Context context, Handler handler)
     {
-        this.servTrans = serverTransmission;
+        this.serverTransmission = serverTransmission;
         this.login = login;
         this.pass = pass;
         this.context = context;
@@ -42,15 +40,15 @@ public class ThreadLogin implements Runnable {
 
     @Override
     public void run() {
-        servTrans.loginToServer(login, pass);
-        int response = servTrans.getResponseLogin();
+        serverTransmission.loginToServer(login, pass);
+        int response = serverTransmission.getResponseLogin();
         while(response  == 20){
             try {
                 thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            response = servTrans.getResponseLogin();
+            response = serverTransmission.getResponseLogin();
         }
 
         if(response == 0){

@@ -23,6 +23,7 @@ public class ActivityLogin extends Activity {
     private ThreadLogin threadLogin;
     private static ServerTransmission serverTransmission;
     private static Handler handler;
+    private Context context;
 
     //Obiekty GUI
     private TextView login;
@@ -30,30 +31,24 @@ public class ActivityLogin extends Activity {
     private ProgressBar loading;
     private RelativeLayout mainLayout;
 
-    WifiManager wifiManager;
+
 
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+
+        context = getApplicationContext();
+
         Intent service = new Intent(this, ServerTransmission.class);
         this.startService(service);
         bindService(service, bService, this.BIND_AUTO_CREATE);
-        //serverTransmission = new ServerTransmission();
-        //serverTransmission.startConnection();
-
 
 // Znalezienie komponentów na GUI
         loading = (ProgressBar) findViewById(R.id.loading_spinner);
         mainLayout = (RelativeLayout)findViewById(R.id.myRalaticeLayout);
         login = (TextView)findViewById(R.id.loginServer);
         pass = (TextView)findViewById(R.id.passServer);
-
-
-        wifiManager = (WifiManager)getSystemService(Context.WIFI_SERVICE);
-
-
-      // loading = new Intent(getApplicationContext(), LoadingActivity.class);
 
     }
 
@@ -84,7 +79,15 @@ public class ActivityLogin extends Activity {
         switch(v.getId())
         {
             case R.id.bntLoginServer: bntLogin(); break;
+            case R.id.bntSearch: bntSearch(); break; //TODO potem to wywalic jak mapa bedzie dzialac
         }
+    }
+
+    public void bntSearch()  //TODO potem wywalić tą metodę jak będzie dziłać mapa
+    {
+        Intent search = new Intent(context, ActivitySearch.class);
+        search.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(search);
     }
 
     /**
@@ -109,14 +112,8 @@ public class ActivityLogin extends Activity {
             }
         };
 
-        threadLogin = new ThreadLogin(serverTransmission,login.getText().toString(), pass.getText().toString(),getApplicationContext(),handler);
+        threadLogin = new ThreadLogin(serverTransmission,login.getText().toString(), pass.getText().toString(),context,handler);
         threadLogin.start();
-    }
-
-
-    public static ServerTransmission getServerTransmission()
-    {
-        return serverTransmission;
     }
 
     ServiceConnection bService = new ServiceConnection() {
