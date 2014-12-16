@@ -56,6 +56,7 @@ public class ActivityLogin extends Activity {
     public void onDestroy()
     {
         super.onDestroy();
+        serverTransmission.destroy();
         this.unbindService(bService);
     }
 

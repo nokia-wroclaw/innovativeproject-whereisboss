@@ -52,6 +52,7 @@ public class ThreadLogin implements Runnable {
         }
 
         if(response == 0){
+           // serverTransmission.createCookie();
             Intent loading = new Intent(context, ActivityMain.class);
             loading.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(loading);

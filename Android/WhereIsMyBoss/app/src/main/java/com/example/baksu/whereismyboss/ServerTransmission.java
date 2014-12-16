@@ -10,16 +10,20 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.engineio.client.Transport;
 import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Manager;
 import com.github.nkzawa.socketio.client.Socket;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.CookieManager;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -33,17 +37,19 @@ public class ServerTransmission extends Service
     private List<Building> buildings;
     private Floor[] floors;
     private Room[] rooms;
+    private String cookie;
+    private final String host = "https://whereisbosstest.herokuapp.com";
+   //private final String host = "https://whereisboss.herokuapp.com";
 
     /**
     * Konstruktor odpowiedzialny za stworzenie połączenia z serwerem
      */
     public ServerTransmission()
     {
+        cookie = "hi";
         try
         {
-            //this.socket = IO.socket("http://stormy-shore-9392.herokuapp.com/");
-            //this.socket = IO.socket("https://whereisboss.herokuapp.com");
-           this.socket = IO.socket("https://whereisbosstest.herokuapp.com");
+           this.socket = IO.socket(host);
           
           //  socket.connect();
 
@@ -57,15 +63,18 @@ public class ServerTransmission extends Service
     {
         try
         {
-            //this.socket = IO.socket("https://whereisboss.herokuapp.com");
-            this.socket = IO.socket("https://whereisbosstest.herokuapp.com");
-            //this.socket = IO.socket("http://stormy-shore-9392.herokuapp.com/");
+            this.socket = IO.socket(host);
         }catch(URISyntaxException e)
         {
         //TODO: Dodać jakiś wyjątek
         }
 
         return Service.START_NOT_STICKY;
+    }
+
+    public void destroy()
+    {
+            stopSelf();
     }
 
     @Override
@@ -82,9 +91,39 @@ public class ServerTransmission extends Service
     /**
     * Rozpoczęcie połączenia z serwerem
      */
-    public void startConnection()           // Rozpoczęcie połączenia z serwerem
+    public void startConnection()
     {
+        createCookie();
         socket.connect();
+    }
+
+    public void createCookie()
+    {
+        socket.io().on(Manager.EVENT_TRANSPORT, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                Transport transport = (Transport)args[0];
+                transport.on(Transport.EVENT_REQUEST_HEADERS, new Emitter.Listener() {
+                    @Override
+                    public void call(Object... args) {
+                        @SuppressWarnings("unchecked")
+                        Map<String, String> headers = (Map<String, String>)args[0];
+                        // set header
+                        Log.e("robi sie to ? : ",cookie);
+                        headers.put("app_cookie", cookie);
+                    }
+                }).on(Transport.EVENT_RESPONSE_HEADERS, new Emitter.Listener() {
+                    @Override
+                    public void call(Object... args) {
+                        @SuppressWarnings("unchecked")
+                        Map<String, String> headers = (Map<String, String>)args[0];
+                        // get header
+                        cookie = headers.get("app_cookie");
+                        Log.e("app_cookie",cookie);
+                    }
+                });
+            }
+        });
     }
 
     /**

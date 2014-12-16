@@ -38,6 +38,13 @@ public class ActivityMain extends Activity {
         loading.setVisibility(View.INVISIBLE);
     }
 
+    public void onDestroy()
+    {
+        super.onDestroy();
+        serverTransmission.destroy();
+        this.unbindService(bService);
+    }
+
     @Override
     public void onBackPressed() {
         serverTransmission.endConnection();
