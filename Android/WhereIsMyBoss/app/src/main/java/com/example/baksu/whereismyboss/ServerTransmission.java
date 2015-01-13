@@ -156,9 +156,9 @@ public class ServerTransmission extends Service
         socket.emit("setPosition",list);
     }
 
-/**
- * Funkcja odpowiedzialna za pobieranie wszystkich danych o budynkach
- */
+    /**
+     * Funkcja odpowiedzialna za pobieranie wszystkich danych o budynkach
+     */
     public void downloadBuilding()
     {
         buildings = null;

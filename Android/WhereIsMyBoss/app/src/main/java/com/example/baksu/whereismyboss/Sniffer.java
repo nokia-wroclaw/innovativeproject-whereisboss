@@ -55,42 +55,58 @@ public class Sniffer{
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za wyczyszczenie tablicy
+     */
     public void clearArr()
     {
         arr = new JSONArray();
     }
 
+    /**
+     * Metoda odpowiedzialna za zebranie jednego skanu i odpowiednie wpisanie go do tablicy
+     */
     public void oneScan()
     {
+        boolean jest;
         wifiManager.startScan();
         List<ScanResult> wifiScanList = wifiManager.getScanResults();
         lista = new String[wifiScanList.size()];
 
         for(int i = 0; i < wifiScanList.size(); i++) {
+            jest = false;
             for (int j = 0; j < arr.length(); j++) {
                 try {
                     if (wifiScanList.get(i).BSSID.equals(arr.getJSONObject(j).getString("bssid")))
                     {
                         arr.getJSONObject(j).put("level", arr.getJSONObject(j).getInt("level") + wifiScanList.get(i).level);
                         arr.getJSONObject(j).put("raz", arr.getJSONObject(j).getInt("raz") + 1);
-                    }else
-                    {
-                        JSONObject obj = new JSONObject();
-                        obj.put("ssid", wifiScanList.get(i).SSID);
-                        obj.put("bssid", wifiScanList.get(i).BSSID);
-                        obj.put("level", wifiScanList.get(i).level);
-                        obj.put("frequency", wifiScanList.get(i).frequency);
-                        obj.put("timestamp",System.currentTimeMillis());                    //Pobiera obecny czas jaki jest wyświetlony na device
-                        obj.put("raz",1);
-                        arr.put(obj);
+                        jest = true;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+            try {
+                if(!jest) {
+                    JSONObject obj = new JSONObject();
+                    obj.put("ssid", wifiScanList.get(i).SSID);
+                    obj.put("bssid", wifiScanList.get(i).BSSID);
+                    obj.put("level", wifiScanList.get(i).level);
+                    obj.put("frequency", wifiScanList.get(i).frequency);
+                    obj.put("timestamp", System.currentTimeMillis());                    //Pobiera obecny czas jaki jest wyświetlony na device
+                    obj.put("raz", 1);
+                    arr.put(obj);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za wyliczenie średniej mocy sygnału ze wczesniej zebranych danych
+     */
     public void averageLevel()
     {
         for (int i = 0; i < arr.length(); i++) {
@@ -102,29 +118,16 @@ public class Sniffer{
             }
         }
     }
-/**
-* Metoda odpowiedzialna za zbieranie przez jakiś czas informacji o access poitach i tworzenie tablicy
-* JSONArray zawierająca uśrednione moce sygnałów.
- */
-  /*  public void sredniaSkanu()
-    {
-        wifiManager.startScan();
-        List<ScanResult> list = wifiManager.getScanResults();
-
-        for(int i = 0; i< wifiScanList.size(); i++)
-        {
-            for(int j = 0; j<all.size(); j++)
-            {
-
-            }
-        }
-    }*/
 
     public String[] getList()
     {
         return lista;
     }
 
+    /**
+     * Metoda odpowiedzialna za pobranie z klasy listy skanow
+     * @return
+     */
     public JSONArray getListToSend()
     {
         return arr;

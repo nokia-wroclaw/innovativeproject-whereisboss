@@ -42,7 +42,7 @@ public class ThreadReportPosition implements Runnable
                 sniffer.startScan();
                 backgroundThread.sleep(500);
                 serverTransmission.sendReportPosition(sniffer.getListToSend());
-                backgroundThread.sleep(10*1000); // ma być 180 * 1000
+                backgroundThread.sleep(180*1000); // ma być 180 * 1000
             }
             catch (InterruptedException e)
             {
