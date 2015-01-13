@@ -38,8 +38,8 @@ public class ServerTransmission extends Service
     private Floor[] floors;
     private Room[] rooms;
     private String cookie;
-    private final String host = "https://whereisbosstest.herokuapp.com";
-   //private final String host = "https://whereisboss.herokuapp.com";
+    //private final String host = "https://whereisbosstest.herokuapp.com";
+   private final String host = "https://whereisboss.herokuapp.com";
 
     /**
     * Konstruktor odpowiedzialny za stworzenie połączenia z serwerem
@@ -93,11 +93,11 @@ public class ServerTransmission extends Service
      */
     public void startConnection()
     {
-        createCookie();
+       // createCookie();
         socket.connect();
     }
 
-    public void createCookie()
+    /*public void createCookie()
     {
         socket.io().on(Manager.EVENT_TRANSPORT, new Emitter.Listener() {
             @Override
@@ -109,8 +109,8 @@ public class ServerTransmission extends Service
                         @SuppressWarnings("unchecked")
                         Map<String, String> headers = (Map<String, String>)args[0];
                         // set header
-                        Log.e("robi sie to ? : ",cookie);
-                        headers.put("app_cookie", cookie);
+                        //Log.e("robi sie to ? : ",cookie);
+                        headers.put("Set-Cookie", cookie);
                     }
                 }).on(Transport.EVENT_RESPONSE_HEADERS, new Emitter.Listener() {
                     @Override
@@ -118,13 +118,15 @@ public class ServerTransmission extends Service
                         @SuppressWarnings("unchecked")
                         Map<String, String> headers = (Map<String, String>)args[0];
                         // get header
-                        cookie = headers.get("app_cookie");
-                        Log.e("app_cookie",cookie);
+                        cookie = headers.get("Set-Cookie");
+                        //System.out.println("Wypisało header: ");
+                        System.out.println("Wypisało header: " + headers.toString());
+                        Log.e("Set-Cookie",cookie);
                     }
                 });
             }
         });
-    }
+    }*/
 
     /**
     * Zakończenie połączenia z serwerem
@@ -161,7 +163,7 @@ public class ServerTransmission extends Service
     {
         buildings = null;
 
-        socket.emit("getAll","t3");            //TODO: Zminić, żeby nie wpisywać loginu !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        socket.emit("getAll");
         socket.on("getAll", new Emitter.Listener() {
             @Override
 

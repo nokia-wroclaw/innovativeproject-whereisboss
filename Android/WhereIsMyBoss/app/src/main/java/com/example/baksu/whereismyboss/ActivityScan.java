@@ -61,6 +61,14 @@ public class ActivityScan extends Activity {
 
     }
 
+   /* public void onStart()
+    {
+        super.onStart();
+           while(serverTransmission  == null) {
+           }
+        test();
+    }*/
+
     @Override
     public void onBackPressed() {
         this.finish();
@@ -117,6 +125,7 @@ public class ActivityScan extends Activity {
     }
 
     public void test()          //TODO: zmienić żeby ta funkcja odpalała się nie pod przyciskiem ale odrazu po onCreate
+                                //TODO: zmienić nazwy zmiennych w tej funkcji
     {
         buildings = serverTransmission.getBuildings();
 
