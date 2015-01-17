@@ -14,14 +14,14 @@
         android:id="@+id/spinBuildings"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"  />
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/spinFloors"
         android:layout_below="@+id/spinBuildings"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"  />
 
     <Spinner
         android:layout_width="wrap_content"

@@ -162,7 +162,8 @@ public class ActivityScan extends Activity {
                             l3.add(buildings.get(pos1).floors[pos2].rooms[i].name);
                         }
 
-                        adp3=new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_dropdown_item_1line,l3);
+                        adp3=new ArrayAdapter<String>(getBaseContext(),android.R.layout.simple_dropdown_item_1line,l3);
+
                         spinRoom.setAdapter(adp3);
 
                     }
@@ -181,7 +182,7 @@ public class ActivityScan extends Activity {
                 {
                     l2.add(buildings.get(pos1).floors[i].name);
                 }
-                adp2=new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_dropdown_item_1line,l2);
+                adp2=new ArrayAdapter<String>(getBaseContext(),android.R.layout.simple_dropdown_item_1line,l2);
                 spinFloor.setAdapter(adp2);
 
             }
