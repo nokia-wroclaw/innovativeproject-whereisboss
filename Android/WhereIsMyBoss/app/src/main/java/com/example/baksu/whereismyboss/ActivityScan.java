@@ -38,6 +38,7 @@ public class ActivityScan extends Activity {
     private String building;
     private String floor;
     private String room;
+    private Button bntStopScan,bntStartScan;
 
     List<Building> buildings;
 
@@ -56,8 +57,14 @@ public class ActivityScan extends Activity {
         spinFloor = (Spinner)findViewById(R.id.spinFloors);
         spinRoom = (Spinner)findViewById(R.id.spinRooms);
 
+        bntStopScan = (Button) findViewById(R.id.bntStopScan);
+        bntStopScan.setEnabled(false);
+        bntStartScan = (Button) findViewById(R.id.bntStartScan);
+        bntStartScan.setEnabled(false);
+
         Intent service = new Intent(this, ServerTransmission.class);
         bindService(service, bService, this.BIND_AUTO_CREATE);
+
 
     }
 
@@ -72,6 +79,8 @@ public class ActivityScan extends Activity {
     @Override
     public void onBackPressed() {
         this.finish();
+        if(bntStopScan.isEnabled())
+            stopScan();
     }
 
     public void bntClick(View v)
@@ -86,6 +95,8 @@ public class ActivityScan extends Activity {
 
     private void startScan()
     {
+        bntStartScan.setEnabled(false);
+        bntStopScan.setEnabled(true);
         building = null;
         floor = null;
         room = null;
@@ -122,6 +133,8 @@ public class ActivityScan extends Activity {
     {
         threadScan.stop();
         Toast.makeText(context, "Skanowanie zostało przerwane", Toast.LENGTH_LONG).show();
+        bntStartScan.setEnabled(true);
+        bntStopScan.setEnabled(false);
     }
 
     public void test()          //TODO: zmienić żeby ta funkcja odpalała się nie pod przyciskiem ale odrazu po onCreate
@@ -173,6 +186,7 @@ public class ActivityScan extends Activity {
 
                     }
                 });
+                bntStartScan.setEnabled(true);
             }
 
             private void add1()

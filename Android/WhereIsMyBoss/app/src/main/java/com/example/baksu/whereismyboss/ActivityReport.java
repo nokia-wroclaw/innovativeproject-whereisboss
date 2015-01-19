@@ -9,6 +9,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 /**
@@ -20,6 +21,7 @@ public class ActivityReport extends Activity {
     private ThreadReportPosition threadReport;
     private Context context;
     private WifiManager wifiManager;
+    private Button bntStartReport,bntStopReport;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +29,11 @@ public class ActivityReport extends Activity {
 
         context = getApplicationContext();
         wifiManager = (WifiManager)getSystemService(Context.WIFI_SERVICE);
+
+        bntStopReport = (Button) findViewById(R.id.bntStopReport);
+        bntStopReport.setEnabled(false);
+        bntStartReport = (Button) findViewById(R.id.bntStartReport);
+        bntStartReport.setEnabled(true);
 
         Intent service = new Intent(this, ServerTransmission.class);
         bindService(service, bService, this.BIND_AUTO_CREATE);
@@ -57,6 +64,8 @@ public class ActivityReport extends Activity {
         threadReport = new ThreadReportPosition(wifiManager,serverTransmission);
         threadReport.start();
         Toast.makeText(context, "Reportowanie rozpoczęte", Toast.LENGTH_LONG).show();
+        bntStartReport.setEnabled(false);
+        bntStopReport.setEnabled(true);
     }
 
     /**
@@ -66,6 +75,8 @@ public class ActivityReport extends Activity {
     {
         threadReport.stop();
         Toast.makeText(context, "Reportowanie zostało przerwane", Toast.LENGTH_LONG).show();
+        bntStartReport.setEnabled(true);
+        bntStopReport.setEnabled(false);
     }
 
 
