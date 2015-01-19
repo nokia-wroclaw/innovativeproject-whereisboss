@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/myRalaticeLayout"
     android:layout_width="wrap_content"
@@ -6,18 +6,42 @@
     android:layout_alignParentLeft="true"
     android:layout_centerVertical="true"
     android:scaleType="center"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="5dp"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".ActivitySearch">
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:text="SEARCH"/>
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/button"
+        android:layout_marginLeft="120dp"
+        android:ems="6"
+        android:inputType="text" >
+        <requestFocus />
+    </EditText>
 
+
+    <HorizontalScrollView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
     <com.example.baksu.whereismyboss.ShowMap
         android:id="@+id/main_imagemap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="center"
+        android:layout_below="@+id/button1"
+        android:layout_marginTop="50dp"
         android:src="@drawable/budynek" />
-
+    </HorizontalScrollView>
     <ProgressBar
         android:id="@+id/loading_spinner"
         style="?android:progressBarStyleLarge"
