@@ -26,13 +26,13 @@ public class ThreadReportPosition implements Runnable
             backgroundThread = new Thread( this );
             backgroundThread.start();
         }
-        Log.i("Watek wystartował", "");
+       // Log.i("Watek wystartował", "");
     }
 
     public void stop() {
         running = false;
         backgroundThread.interrupted();
-        Log.i("Watek się zatrzymal","");
+       // Log.i("Watek się zatrzymal","");
     }
 
     public void run() {

@@ -68,7 +68,6 @@ public class ThreadBackgroundScan implements Runnable {
                 for (int i=1 ; i<=7; i++) {
                     System.out.println(sniffer.getListToSend());
                     sniffer.oneScan();
-                    System.out.println("Po skanie : " + sniffer.getListToSend());
                     backgroundThread.sleep(300);
                 }
                 sniffer.averageLevel();

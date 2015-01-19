@@ -93,21 +93,21 @@ public class ServerTransmission extends Service
      */
     public void startConnection()
     {
-       // createCookie();
+        createCookie();
         socket.connect();
     }
 
-    /*public void createCookie()
+    public void createCookie()
     {
         socket.io().on(Manager.EVENT_TRANSPORT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                Transport transport = (Transport)args[0];
+                Transport transport = (Transport) args[0];
                 transport.on(Transport.EVENT_REQUEST_HEADERS, new Emitter.Listener() {
                     @Override
                     public void call(Object... args) {
                         @SuppressWarnings("unchecked")
-                        Map<String, String> headers = (Map<String, String>)args[0];
+                        Map<String, String> headers = (Map<String, String>) args[0];
                         // set header
                         //Log.e("robi sie to ? : ",cookie);
                         headers.put("Set-Cookie", cookie);
@@ -116,17 +116,25 @@ public class ServerTransmission extends Service
                     @Override
                     public void call(Object... args) {
                         @SuppressWarnings("unchecked")
-                        Map<String, String> headers = (Map<String, String>)args[0];
+                        Map<String, String> headers = (Map<String, String>) args[0];
                         // get header
-                        cookie = headers.get("Set-Cookie");
+                        System.out.println(cookie);
+                        if (cookie != null && !headers.isEmpty() && cookie.equals("hi")) {
+                            cookie = headers.get("Set-Cookie");
+                        }
+                        if(!headers.isEmpty()){
+                            if(!cookie.equals(headers.get("Set-Cookie"))){
+                                System.out.println("Sesja została przerwana, powrót do activity logowania");
+                            }
+                        }
                         //System.out.println("Wypisało header: ");
-                        System.out.println("Wypisało header: " + headers.toString());
-                        Log.e("Set-Cookie",cookie);
+                             System.out.println("Wypisało header: " + headers.toString());
+//                        Log.e("Set-Cookie", cookie);
                     }
                 });
             }
         });
-    }*/
+    }
 
     /**
     * Zakończenie połączenia z serwerem
@@ -184,8 +192,8 @@ public class ServerTransmission extends Service
                             rooms = new Room[roomsJA.length()];
                             for(int k = 0 ; k < roomsJA.length(); k++)
                             {
-                                Log.e("name",roomsJA.getJSONObject(k).getString("room"));
-                                Log.e("id",roomsJA.getJSONObject(k).getString("_id"));
+                               // Log.e("name",roomsJA.getJSONObject(k).getString("room"));
+                               // Log.e("id",roomsJA.getJSONObject(k).getString("_id"));
                                 rooms[k] = new Room(roomsJA.getJSONObject(k).getString("room"),roomsJA.getJSONObject(k).getString("_id"));
                             }
                             floors[j] = new Floor(floorsJA.getJSONObject(j).getString("floor"),floorsJA.getJSONObject(j).getString("_id"),rooms);
