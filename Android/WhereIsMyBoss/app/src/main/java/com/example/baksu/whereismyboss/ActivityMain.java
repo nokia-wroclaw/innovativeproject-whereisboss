@@ -89,11 +89,11 @@ public class ActivityMain extends Activity {
         serverTransmission.logout();
     }
 
-    ServiceConnection bService = new ServiceConnection() {
-        public void onServiceConnected(ComponentName className, IBinder binder) {
+            ServiceConnection bService = new ServiceConnection() {
+            public void onServiceConnected(ComponentName className, IBinder binder) {
             ServerTransmission.MyBinder b = (ServerTransmission.MyBinder) binder;
             serverTransmission = b.getService();
-        }
+    }
 
         public void onServiceDisconnected(ComponentName className) {
             serverTransmission = null;

@@ -89,29 +89,33 @@ public class ActivityScan extends Activity {
         });
     }
 
-   /* public void onStart()
-    {
-        super.onStart();
-           while(serverTransmission  == null) {
-           }
-        test();
-    }*/
-
     @Override
     public void onBackPressed() {
         this.finish();
 
-        if(bntStopScan.isEnabled() || mySwitch.isChecked())
-            stopScan();
+       // if(bntStopScan.isEnabled() || mySwitch.isChecked())
+       //     stopScan();
+    }
+
+    public void onDestroy()
+    {
+        super.onDestroy();
+        if(threadScan != null)
+            threadScan.stop();
+        if(mySwitch.isChecked())
+            Toast.makeText(context, "Skanowanie zostało przerwane", Toast.LENGTH_LONG).show();
+        if(bService != null)
+            this.unbindService(bService);
     }
 
     public void bntClick(View v)
     {
         switch(v.getId())
         {
-            case R.id.bntGetBuildings: test(); break;
+            case R.id.bntGetBuildings: setSpinners(); break;
             case R.id.bntStartScan: startScan(); break;
             case R.id.bntStopScan: stopScan(); break;
+            case R.id.bntLogout: bntLogout(); break;
         }
     }
 
@@ -159,7 +163,7 @@ public class ActivityScan extends Activity {
         bntStopScan.setEnabled(false);
     }
 
-    public void test()          //TODO: zmienić żeby ta funkcja odpalała się nie pod przyciskiem ale odrazu po onCreate
+    public void setSpinners()          //TODO: zmienić żeby ta funkcja odpalała się nie pod przyciskiem ale odrazu po onCreate
                                 //TODO: zmienić nazwy zmiennych w tej funkcji
     {
         buildings = serverTransmission.getBuildings();
@@ -229,6 +233,11 @@ public class ActivityScan extends Activity {
 
             }
         });
+    }
+
+    public void bntLogout()
+    {
+        serverTransmission.logout();
     }
 
     ServiceConnection bService = new ServiceConnection() {

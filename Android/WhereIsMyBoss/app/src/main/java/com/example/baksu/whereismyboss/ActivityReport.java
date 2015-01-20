@@ -41,9 +41,17 @@ public class ActivityReport extends Activity {
 
     @Override
     public void onBackPressed() {
-        serverTransmission.endConnection();
-        this.unbindService(bService);
         this.finish();
+    }
+
+    public void onDestroy()
+    {
+        super.onDestroy();
+        if(threadReport != null)
+            threadReport.stop();
+        Toast.makeText(context, "Reportowanie zostało przerwane", Toast.LENGTH_LONG).show();
+        if(bService != null)
+            this.unbindService(bService);
     }
 
     public void bntClick(View v)
@@ -52,7 +60,7 @@ public class ActivityReport extends Activity {
         {
             case R.id.bntStartReport: bntStartReport(); break;
             case R.id.bntStopReport: bntStopReport(); break;
-           // case R.id.bntLogout: bntLogout(); break;  //TODO: Dodać obsługę logout
+            case R.id.bntLogout: bntLogout(); break;
         }
     }
 
@@ -79,6 +87,10 @@ public class ActivityReport extends Activity {
         bntStopReport.setEnabled(false);
     }
 
+    public void bntLogout()
+    {
+        serverTransmission.logout();
+    }
 
     ServiceConnection bService = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder binder) {

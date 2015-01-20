@@ -260,6 +260,7 @@ public class ServerTransmission extends Service
 
     public void logout(){
         System.out.println("zostales wylogowany");
+        endConnection();
         Intent intent = new Intent(this, ActivityLogin.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
