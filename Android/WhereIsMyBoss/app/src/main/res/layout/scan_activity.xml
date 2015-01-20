@@ -66,4 +66,15 @@
         android:layout_alignParentBottom="true"
         android:onClick="bntClick" />
 
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Scan"
+        android:id="@+id/switchScan"
+        android:layout_below="@+id/bntStopScan"
+        android:layout_centerHorizontal="true"
+        android:textOn="ON"
+        android:textOff="OFF"/>
+
+
 </RelativeLayout>

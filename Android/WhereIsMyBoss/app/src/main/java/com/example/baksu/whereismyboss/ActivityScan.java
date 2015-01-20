@@ -17,8 +17,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
-
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,6 +41,7 @@ public class ActivityScan extends Activity {
     private String floor;
     private String room;
     private Button bntStopScan,bntStartScan;
+    private Switch mySwitch;
 
     List<Building> buildings;
 
@@ -65,7 +68,25 @@ public class ActivityScan extends Activity {
         Intent service = new Intent(this, ServerTransmission.class);
         bindService(service, bService, this.BIND_AUTO_CREATE);
 
+        mySwitch = (Switch) findViewById(R.id.switchScan);
+        mySwitch.setChecked(false);
+        mySwitch.setClickable(false);
+        mySwitch.setOnCheckedChangeListener(new OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked)
+            {
+                if(isChecked)
+                {
+                    startScan();
+                }
+                else
+                {
+                    stopScan();
+                }
 
+            }
+        });
     }
 
    /* public void onStart()
@@ -79,7 +100,8 @@ public class ActivityScan extends Activity {
     @Override
     public void onBackPressed() {
         this.finish();
-        if(bntStopScan.isEnabled())
+
+        if(bntStopScan.isEnabled() || mySwitch.isChecked())
             stopScan();
     }
 
@@ -187,6 +209,7 @@ public class ActivityScan extends Activity {
                     }
                 });
                 bntStartScan.setEnabled(true);
+                mySwitch.setClickable(true);
             }
 
             private void add1()
@@ -218,4 +241,6 @@ public class ActivityScan extends Activity {
             serverTransmission = null;
         }
     };
+
+
 }
