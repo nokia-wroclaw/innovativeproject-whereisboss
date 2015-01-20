@@ -47,9 +47,9 @@ public class ActivityMain extends Activity {
 
     @Override
     public void onBackPressed() {
-        serverTransmission.endConnection();
-        this.unbindService(bService);
-        this.finish();
+        //serverTransmission.endConnection();
+        //this.unbindService(bService);
+        //this.finish();
     }
 
     public void bntClick(View v)
@@ -86,7 +86,7 @@ public class ActivityMain extends Activity {
 
     public void bntLogout()
     {
-
+        serverTransmission.logout();
     }
 
     ServiceConnection bService = new ServiceConnection() {

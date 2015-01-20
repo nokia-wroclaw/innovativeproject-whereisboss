@@ -55,6 +55,7 @@ public class ThreadLogin implements Runnable {
            // serverTransmission.createCookie();
             Intent loading = new Intent(context, ActivityMain.class);
             loading.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            serverTransmission.newTableActivity();
             context.startActivity(loading);
         }else if(response == 1){
             msg.obj = "Brak podanego użytkownika w bazie";

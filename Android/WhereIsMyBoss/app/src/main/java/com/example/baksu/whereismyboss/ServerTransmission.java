@@ -1,5 +1,6 @@
 package com.example.baksu.whereismyboss;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -38,6 +39,7 @@ public class ServerTransmission extends Service
     private Floor[] floors;
     private Room[] rooms;
     private String cookie;
+    private List<Activity> activities;
     //private final String host = "https://whereisbosstest.herokuapp.com";
    private final String host = "https://whereisboss.herokuapp.com";
 
@@ -254,6 +256,14 @@ public class ServerTransmission extends Service
                 response = (Integer)args[0];
             }
         });
+    }
+
+    public void logout(){
+        System.out.println("zostales wylogowany");
+        Intent intent = new Intent(this, ActivityLogin.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     public int getResponseLogin()
