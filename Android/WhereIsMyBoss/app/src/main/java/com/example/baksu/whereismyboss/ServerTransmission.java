@@ -39,7 +39,7 @@ public class ServerTransmission extends Service
     private Floor[] floors;
     private Room[] rooms;
     private String cookie;
-    private List<Activity> activities;
+    private JSONObject search;
     //private final String host = "https://whereisbosstest.herokuapp.com";
    private final String host = "https://whereisboss.herokuapp.com";
 
@@ -258,6 +258,17 @@ public class ServerTransmission extends Service
         });
     }
 
+    public void search(String name){
+        search = null;
+        socket.emit("SearchAndroid",name);
+        socket.on("SearchAndroid", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                search = (JSONObject)args[0];
+            }
+        });
+    }
+
     public void logout(){
         System.out.println("zostales wylogowany");
         endConnection();
@@ -275,6 +286,10 @@ public class ServerTransmission extends Service
     public List<Building>getBuildings()
     {
         return buildings;
+    }
+
+    public JSONObject getSearch(){
+        return search;
     }
 
 }
