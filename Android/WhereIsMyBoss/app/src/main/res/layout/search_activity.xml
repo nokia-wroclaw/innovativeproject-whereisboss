@@ -9,7 +9,8 @@
     >
     <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView">
         <HorizontalScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -28,7 +29,8 @@
         android:layout_height="125dp"
         android:visibility="visible"
         android:background="@android:color/background_light"
-        >
+        android:layout_alignParentTop="true"
+        android:layout_alignBottom="@+id/scrollView">
         <EditText
             android:id="@+id/nameSearch"
             android:layout_width="match_parent"

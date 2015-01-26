@@ -58,6 +58,7 @@ public class ActivityMain extends Activity {
         {
             case R.id.bntScan: bntScan(); break;
             case R.id.bntReport: bntReport(); break;
+            case R.id.bntSearch: bntSearch(); break;
             case R.id.bntLogout: bntLogout(); break;//TODO: Dorobić przycisk logout
         }
     }
@@ -74,6 +75,13 @@ public class ActivityMain extends Activity {
         Intent report = new Intent(context, ActivityReport.class);
         report.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(report);
+    }
+
+    public void bntSearch()
+    {
+        Intent search = new Intent(context, ActivitySearch.class);
+        search.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(search);
     }
 
     public void bntLogout()

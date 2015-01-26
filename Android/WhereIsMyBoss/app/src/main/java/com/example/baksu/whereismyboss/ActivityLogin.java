@@ -80,15 +80,7 @@ public class ActivityLogin extends Activity {
         switch(v.getId())
         {
             case R.id.bntLoginServer: bntLogin(); break;
-            case R.id.bntSearch: bntSearch(); break; //TODO potem to wywalic jak mapa bedzie dzialac
         }
-    }
-
-    public void bntSearch()  //TODO potem wywalić tą metodę jak będzie dziłać mapa
-    {
-        Intent search = new Intent(context, ActivitySearch.class);
-        search.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(search);
     }
 
     /**
