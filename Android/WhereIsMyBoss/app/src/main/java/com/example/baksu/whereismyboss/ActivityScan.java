@@ -40,8 +40,7 @@ public class ActivityScan extends Activity {
     private String building;
     private String floor;
     private String room;
-    private Button bntStopScan,bntStartScan;
-    private Switch mySwitch;
+    private Switch scanSwitch;
 
     List<Building> buildings;
 
@@ -60,18 +59,13 @@ public class ActivityScan extends Activity {
         spinFloor = (Spinner)findViewById(R.id.spinFloors);
         spinRoom = (Spinner)findViewById(R.id.spinRooms);
 
-        bntStopScan = (Button) findViewById(R.id.bntStopScan);
-        bntStopScan.setEnabled(false);
-        bntStartScan = (Button) findViewById(R.id.bntStartScan);
-        bntStartScan.setEnabled(false);
-
         Intent service = new Intent(this, ServerTransmission.class);
         bindService(service, bService, this.BIND_AUTO_CREATE);
 
-        mySwitch = (Switch) findViewById(R.id.switchScan);
-        mySwitch.setChecked(false);
-        mySwitch.setClickable(false);
-        mySwitch.setOnCheckedChangeListener(new OnCheckedChangeListener()
+        scanSwitch = (Switch) findViewById(R.id.switchScan);
+        scanSwitch.setChecked(false);
+        scanSwitch.setClickable(false);
+        scanSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener()
         {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked)
@@ -102,7 +96,7 @@ public class ActivityScan extends Activity {
         super.onDestroy();
         if(threadScan != null)
             threadScan.stop();
-        if(mySwitch.isChecked())
+        if(scanSwitch.isChecked())
             Toast.makeText(context, "Skanowanie zostało przerwane", Toast.LENGTH_LONG).show();
         if(bService != null)
             this.unbindService(bService);
@@ -113,16 +107,12 @@ public class ActivityScan extends Activity {
         switch(v.getId())
         {
             case R.id.bntGetBuildings: setSpinners(); break;
-            case R.id.bntStartScan: startScan(); break;
-            case R.id.bntStopScan: stopScan(); break;
             case R.id.bntLogout: bntLogout(); break;
         }
     }
 
     private void startScan()
     {
-        bntStartScan.setEnabled(false);
-        bntStopScan.setEnabled(true);
         building = null;
         floor = null;
         room = null;
@@ -159,8 +149,6 @@ public class ActivityScan extends Activity {
     {
         threadScan.stop();
         Toast.makeText(context, "Skanowanie zostało przerwane", Toast.LENGTH_LONG).show();
-        bntStartScan.setEnabled(true);
-        bntStopScan.setEnabled(false);
     }
 
     public void setSpinners()          //TODO: zmienić żeby ta funkcja odpalała się nie pod przyciskiem ale odrazu po onCreate
@@ -212,8 +200,7 @@ public class ActivityScan extends Activity {
 
                     }
                 });
-                bntStartScan.setEnabled(true);
-                mySwitch.setClickable(true);
+                scanSwitch.setClickable(true);
             }
 
             private void add1()

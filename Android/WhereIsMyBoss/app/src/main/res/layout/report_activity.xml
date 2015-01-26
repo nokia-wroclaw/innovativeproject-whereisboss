@@ -12,28 +12,20 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start Report"
-        android:id="@+id/bntStartReport"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="192dp"
-        android:onClick="bntClick" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Stop Report"
-        android:id="@+id/bntStopReport"
-        android:layout_below="@+id/bntStartReport"
-        android:layout_centerHorizontal="true"
-        android:onClick="bntClick" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="LOGOUT"
         android:id="@+id/bntLogout"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:onClick="bntClick"/>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Report"
+        android:id="@+id/switchReport"
+        android:textOn="ON"
+        android:textOff="OFF"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/bntLogout"
+        android:layout_toStartOf="@+id/bntLogout" />
 </RelativeLayout>
