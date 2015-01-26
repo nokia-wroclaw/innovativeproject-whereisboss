@@ -103,7 +103,7 @@ public class ServerTransmission extends Service
     {
         socket.io().on(Manager.EVENT_TRANSPORT, new Emitter.Listener() {
             @Override
-            public void call(Object... args) {
+            public void call(Object... args) {          //TODO: zmienić żeby po utracie internetu wylogowywało
                 Transport transport = (Transport) args[0];
                 transport.on(Transport.EVENT_REQUEST_HEADERS, new Emitter.Listener() {
                     @Override
@@ -130,7 +130,7 @@ public class ServerTransmission extends Service
                             }
                         }
                         //System.out.println("Wypisało header: ");
-                             System.out.println("Wypisało header: " + headers.toString());
+                    //         System.out.println("Wypisało header: " + headers.toString());
 //                        Log.e("Set-Cookie", cookie);
                     }
                 });

@@ -30,7 +30,7 @@
         android:background="@android:color/background_light"
         >
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/nameSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -40,13 +40,14 @@
             android:inputType="text" >
         </EditText>
         <Button
-            android:id="@+id/button"
+            android:id="@+id/bntSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="16dp"
-            android:layout_alignBaseline="@+id/editText"
-            android:text="SEARCH"/>
+            android:layout_alignBaseline="@+id/nameSearch"
+            android:text="SEARCH"
+            android:onClick="bntClick"/>
         <TextView
             android:id="@+id/building"
             android:layout_width="match_parent"

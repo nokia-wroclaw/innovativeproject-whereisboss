@@ -3,6 +3,7 @@ package com.example.baksu.whereismyboss;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Message;
 
 import org.json.JSONObject;
 
@@ -16,6 +17,7 @@ public class ThreadSearch implements Runnable {
     private String name;
     private Context context;
     private Handler handler;
+    private Message msg = Message.obtain();
 
     public ThreadSearch (ServerTransmission serverTransmission, String name,  Context context, Handler handler)
     {
@@ -50,19 +52,9 @@ public class ThreadSearch implements Runnable {
         }
 
         if(response != null){
-            System.out.println("Udało się poprawnie ściągnąc mapę");
-            // serverTransmission.createCookie();
-            //Intent loading = new Intent(context, ActivityMain.class); //TODO wpisać tutaj odświerzenie mapy
-            //loading.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            //context.startActivity(loading);
-        /*}else if(response == 1){
-            msg.obj = "Brak podanego użytkownika w bazie";
+            msg.obj = "ready";
             msg.setTarget(handler);
             msg.sendToTarget();
-        }else if(response == 2){
-            msg.obj = "Błędne hasło";
-            msg.setTarget(handler);
-            msg.sendToTarget();*/
         }
 
         thread.interrupt();

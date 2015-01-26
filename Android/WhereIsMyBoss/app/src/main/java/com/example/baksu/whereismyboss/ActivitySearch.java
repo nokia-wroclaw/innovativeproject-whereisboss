@@ -14,12 +14,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -49,8 +53,11 @@ public class ActivitySearch extends Activity {
     private ServerTransmission serverTransmission;
     private Context context;
     ImageView imageView;
-    public JSONObject dataJSON;  //parametr
+    private JSONObject dataJSON;  //parametr
     public static ProgressDialog pd;
+    private ThreadSearch thredSearch;
+    private EditText nameEdit;
+    private Handler handler;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,42 +66,66 @@ public class ActivitySearch extends Activity {
         pd = new ProgressDialog(this);
         pd.setMessage("Downloading map");
         imageView = (ImageView) findViewById(R.id.main_imagemap);
-
-        Button button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                //zbedne
-                String jsonString  = "{\"building\" : \"Lab\",\"floor\" : \"0\",\"mapa\" : \"https://s3.amazonaws.com/whereisboss-assets/54bf6f4244a96b0300d33cbe.jpeg\",\"rooms\" :[{\"_id\":\"54bf6f6444a96b0300d33cbf\",\"coordinates\":[[54,237],[52,387],[229,392],[228,236]],\"room\":\"Lab 1\"},{\"_id\":\"54bf6f6444a96b0300d33cc0\",\"coordinates\":[[228,236],[230,393],[457,392],[456,235]],\"room\":\"Lab 2\"},{\"_id\":\"54bf6f6444a96b0300d33cc1\",\"coordinates\":[[456,235],[457,392],[633,393],[633,234]],\"room\":\"Lab 3\"}],\"location\" : \"54bf6f6444a96b0300d33cc0\"}";
-
-                try {
-                    JSONObject dataJSON =  new JSONObject(jsonString); //zbedne
-                    JSONArray array = dataJSON.getJSONArray("rooms");
-                    JSONObject[] rooms = new JSONObject[array.length()];
-                    ShowMap.array = array;
-
-                    String location = dataJSON.getString("location");
-                    ShowMap.room = location;
-
-                    String mapa = dataJSON.getString("mapa");
-                    String buildingString = dataJSON.getString("building");
-                    String floorString = dataJSON.getString("floor");
-
-                    TextView building = (TextView) findViewById(R.id.building);
-                    building.setText("Building:   " + buildingString);
-                    TextView floor = (TextView) findViewById(R.id.floor);
-                    floor.setText("Floor:   " +floorString);
-
-                    new DownloadImageTask(imageView).execute(mapa);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        nameEdit = (EditText) findViewById(R.id.nameSearch);
 
         Intent service = new Intent(this, ServerTransmission.class);
         bindService(service, bService, this.BIND_AUTO_CREATE);
+    }
+
+    public void bntClick(View v)
+    {
+        switch(v.getId())
+        {
+            case R.id.bntSearch: bntSearch(); break;
+        }
+    }
+
+    public void bntSearch(){
+
+            handler = new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    String message = (String) msg.obj;
+                    if(message.equals("ready")){
+                        showMap();
+                    }else{
+                        Toast.makeText(ActivitySearch.this,"ERROR", Toast.LENGTH_LONG).show();
+                    }
+                }
+            };
+
+            thredSearch = new ThreadSearch(serverTransmission,nameEdit.getText().toString(),context,handler);
+            thredSearch.start();
+
+    }
+
+    public void showMap(){
+        try {
+            dataJSON = serverTransmission.getSearch();
+            //String jsonString  = "{\"building\" : \"Lab\",\"floor\" : \"0\",\"mapa\" : \"https://s3.amazonaws.com/whereisboss-assets/54bf6f4244a96b0300d33cbe.jpeg\",\"rooms\" :[{\"_id\":\"54bf6f6444a96b0300d33cbf\",\"coordinates\":[[54,237],[52,387],[229,392],[228,236]],\"room\":\"Lab 1\"},{\"_id\":\"54bf6f6444a96b0300d33cc0\",\"coordinates\":[[228,236],[230,393],[457,392],[456,235]],\"room\":\"Lab 2\"},{\"_id\":\"54bf6f6444a96b0300d33cc1\",\"coordinates\":[[456,235],[457,392],[633,393],[633,234]],\"room\":\"Lab 3\"}],\"location\" : \"54bf6f6444a96b0300d33cc0\"}";
+
+            //JSONObject dataJSON =  new JSONObject(jsonString); //zbedne
+            JSONArray array = dataJSON.getJSONArray("rooms");
+            JSONObject[] rooms = new JSONObject[array.length()];
+            ShowMap.array = array;
+
+            String location = dataJSON.getString("location");
+            ShowMap.room = location;
+
+            String mapa = dataJSON.getString("mapa");
+            String buildingString = dataJSON.getString("building");
+            String floorString = dataJSON.getString("floor");
+
+            TextView building = (TextView) findViewById(R.id.building);
+            building.setText("Building:   " + buildingString);
+            TextView floor = (TextView) findViewById(R.id.floor);
+            floor.setText("Floor:   " +floorString);
+
+            new DownloadImageTask(imageView).execute(mapa);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

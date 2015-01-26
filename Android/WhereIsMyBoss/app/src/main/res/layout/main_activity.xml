@@ -30,15 +30,6 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SEARCH"
-        android:id="@+id/bntSearch"
-        android:layout_below="@+id/bntReport"
-        android:layout_centerHorizontal="true"
-        android:onClick="bntClick" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="LOGOUT"
         android:id="@+id/bntLogout"
         android:layout_alignParentRight="true"
