@@ -19,6 +19,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -26,6 +27,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -45,44 +49,53 @@ public class ActivitySearch extends Activity {
     private ServerTransmission serverTransmission;
     private Context context;
     ImageView imageView;
-    private String string = "https://s3.amazonaws.com/whereisboss-assets/54bf6f4244a96b0300d33cbe.jpeg";
-    Drawable drawable =null;
-
-    static ProgressDialog pd;
-
+    public JSONObject dataJSON;  //parametr
+    public static ProgressDialog pd;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_activity);
-
-
 
         pd = new ProgressDialog(this);
         pd.setMessage("Downloading map");
         imageView = (ImageView) findViewById(R.id.main_imagemap);
 
         Button button = (Button) findViewById(R.id.button);
-
         button.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
+                //zbedne
+                String jsonString  = "{\"building\" : \"Lab\",\"floor\" : \"0\",\"mapa\" : \"https://s3.amazonaws.com/whereisboss-assets/54bf6f4244a96b0300d33cbe.jpeg\",\"rooms\" :[{\"_id\":\"54bf6f6444a96b0300d33cbf\",\"coordinates\":[[54,237],[52,387],[229,392],[228,236]],\"room\":\"Lab 1\"},{\"_id\":\"54bf6f6444a96b0300d33cc0\",\"coordinates\":[[228,236],[230,393],[457,392],[456,235]],\"room\":\"Lab 2\"},{\"_id\":\"54bf6f6444a96b0300d33cc1\",\"coordinates\":[[456,235],[457,392],[633,393],[633,234]],\"room\":\"Lab 3\"}],\"location\" : \"54bf6f6444a96b0300d33cc0\"}";
 
-                new DownloadImageTask(imageView).execute(string);
+                try {
+                    JSONObject dataJSON =  new JSONObject(jsonString); //zbedne
+                    JSONArray array = dataJSON.getJSONArray("rooms");
+                    JSONObject[] rooms = new JSONObject[array.length()];
+                    ShowMap.array = array;
 
+                    String location = dataJSON.getString("location");
+                    ShowMap.room = location;
 
-                ShowMap.data = "{\"rooms\":[{\"name\":\"RED\",\"coordinates\":[[54,237],[52,387],[229,392],[228,236]]},{\"name\":\"YELLOW\",\"coordinates\":[[228,236],[230,393],[457,392],[456,235]]},{\"name\":\"BLUE\",\"coordinates\":[[456,235],[457,392],[633,393],[633,234]]}]}";
-                ShowMap.room = "BLUE";
+                    String mapa = dataJSON.getString("mapa");
+                    String buildingString = dataJSON.getString("building");
+                    String floorString = dataJSON.getString("floor");
 
+                    TextView building = (TextView) findViewById(R.id.building);
+                    building.setText("Building:   " + buildingString);
+                    TextView floor = (TextView) findViewById(R.id.floor);
+                    floor.setText("Floor:   " +floorString);
 
+                    new DownloadImageTask(imageView).execute(mapa);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
-
         Intent service = new Intent(this, ServerTransmission.class);
         bindService(service, bService, this.BIND_AUTO_CREATE);
-
     }
-
 
     /**
      * Metoda odpowiedzialna za obsługę przyciusku back
@@ -102,10 +115,6 @@ public class ActivitySearch extends Activity {
             ServerTransmission.MyBinder b = (ServerTransmission.MyBinder) binder;
             serverTransmission = b.getService();
         }
-
-
-
-
 
         public void onServiceDisconnected(ComponentName className) {
             serverTransmission = null;
