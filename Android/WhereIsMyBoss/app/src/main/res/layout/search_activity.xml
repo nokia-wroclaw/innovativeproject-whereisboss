@@ -1,47 +1,100 @@
 <RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+
     android:id="@+id/myRalaticeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentLeft="true"
     android:layout_centerVertical="true"
-    android:scaleType="center"
->
-    <EditText
-        android:id="@+id/editText"
+    android:scaleType="center" >
+
+
+
+        <RelativeLayout
+            android:id="@+id/myRalaticeLayout2"
+            android:layout_width="fill_parent"
+            android:layout_below="@+id/myRalaticeLayout1"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            >
+
+
+                    <ImageView
+                        android:id="@+id/main_imagemap"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="center" />
+
+
+
+        <ProgressBar
+            android:id="@+id/loading_spinner"
+            style="?android:progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible"/>
+    </RelativeLayout>
+
+
+
+
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="invisible"/>
+
+
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/myRalaticeLayout1"
+        android:background="#FFFFFF"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="110dp"
-        android:layout_marginLeft="16dp"
-        android:inputType="text" >
-    </EditText>
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:scaleType="center" >
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="110dp"
+            android:layout_marginLeft="16dp"
+            android:inputType="text" >
+        </EditText>
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:layout_alignBaseline="@+id/editText"
+            android:text="SEARCH"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/myRalaticeLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingRight="16dp"
+        android:paddingBottom="12dp"
+         >
+
     <Button
-        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="LOGOUT"
+        android:id="@+id/bntLogout"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="16dp"
-        android:layout_alignBaseline="@+id/editText"
-        android:text="SEARCH"/>
-
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-    <HorizontalScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-    <com.example.baksu.whereismyboss.ShowMap
-        android:id="@+id/main_imagemap"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button"
-        android:layout_marginTop="60dp"
-        android:scaleType="center"
-        android:src="@drawable/budynek" />
-    </HorizontalScrollView>
-    </ScrollView>
-
-
+        android:onClick="bntClick"/>
+    </RelativeLayout>
 </RelativeLayout>
