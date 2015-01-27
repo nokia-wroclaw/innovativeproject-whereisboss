@@ -72,11 +72,27 @@ public class ActivitySearch extends Activity {
         bindService(service, bService, this.BIND_AUTO_CREATE);
     }
 
+    /**
+     * Metoda odpowiedzialna za obsługę przyciusku back
+     */
+    @Override
+    public void onBackPressed() {
+        this.finish();
+    }
+
+    public void onDestroy()
+    {
+        super.onDestroy();
+        serverTransmission.destroy();
+        this.unbindService(bService);
+    }
+
     public void bntClick(View v)
     {
         switch(v.getId())
         {
             case R.id.bntSearch: bntSearch(); break;
+            case R.id.bntLogout: bntLogout(); break;
         }
     }
 
@@ -97,6 +113,11 @@ public class ActivitySearch extends Activity {
             thredSearch = new ThreadSearch(serverTransmission,nameEdit.getText().toString(),context,handler);
             thredSearch.start();
 
+    }
+
+    public void bntLogout()
+    {
+        serverTransmission.logout();
     }
 
     public void showMap(){
@@ -126,16 +147,6 @@ public class ActivitySearch extends Activity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Metoda odpowiedzialna za obsługę przyciusku back
-     */
-    @Override
-    public void onBackPressed() {
-        serverTransmission.endConnection();
-        this.unbindService(bService);
-        this.finish();
     }
 
     /**

@@ -40,6 +40,7 @@ public class ServerTransmission extends Service
     private Room[] rooms;
     private String cookie;
     private JSONObject search;
+    private boolean firstSearch;
     //private final String host = "https://whereisbosstest.herokuapp.com";
    private final String host = "https://whereisboss.herokuapp.com";
 
@@ -49,6 +50,7 @@ public class ServerTransmission extends Service
     public ServerTransmission()
     {
         cookie = "hi";
+        firstSearch = true;
         try
         {
            this.socket = IO.socket(host);
@@ -95,7 +97,7 @@ public class ServerTransmission extends Service
      */
     public void startConnection()
     {
-        createCookie();
+      //  createCookie();
         socket.connect();
     }
 
@@ -260,13 +262,16 @@ public class ServerTransmission extends Service
 
     public void search(String name){
         search = null;
-        socket.emit("SearchAndroid",name);
-        socket.on("SearchAndroid", new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                search = (JSONObject)args[0];
-            }
-        });
+        if(firstSearch) {
+            firstSearch = false;
+            socket.emit("SearchAndroid", name);
+            socket.on("SearchAndroid", new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    search = (JSONObject) args[0];
+                }
+            });
+        }
     }
 
     public void logout(){

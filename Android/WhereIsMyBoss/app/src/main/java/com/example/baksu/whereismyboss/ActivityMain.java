@@ -47,9 +47,7 @@ public class ActivityMain extends Activity {
 
     @Override
     public void onBackPressed() {
-        //serverTransmission.endConnection();
-        //this.unbindService(bService);
-        //this.finish();
+        this.finish();
     }
 
     public void bntClick(View v)
