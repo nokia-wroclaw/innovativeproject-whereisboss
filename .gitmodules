@@ -1,0 +1,3 @@
+[submodule "whereismyboss"]
+	path = whereismyboss
+	url = https://github.com/Valkertok/whereismyboss.git
